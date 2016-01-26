@@ -113,12 +113,12 @@ feeds.putCalendars = function(feed, callback){
       },
       data: obj,
       contentType: "application/json",
-      success: (function(resp) {
-        console.log('Title: ' + resp.summary + " - selected: " + resp.selected + ' - colorID: ' + resp.colorId + ' - id: ' + resp.id);
+      success: (function(response) {
+        console.log(response);
+        // console.log('Title: ' + resp.summary + " - selected: " + resp.selected + ' - colorID: ' + resp.colorId + ' - id: ' + resp.id);
         callback(null);
 
-      })(feed),
-      error: function(response) {
+      }), error: function(response) {
         chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
         if (response.status === 401) {
           // feeds.refreshUI();
