@@ -1,15 +1,24 @@
-html{width:300px; height:600px;}
-#logo_text{font-size:16px;}
-h2{font-size:18px;}
-p{font-size:14px;}
-#action-bar img{width:18px; height:18px;}
+html, body{width:300px; height:600px;}
+h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
+p{font-size:16px; font-weight:300; line-height:1.5em;}
 
-#error-auth, #content-body, #group-list{margin:20px 0 0 0;}
-.select-boxes{display:block; width:100%;}
+#logo_text{font-size:18px; font-weight:400;}
+#action-bar img{width:18px; height:18px;}
+.btn-wrap{margin:40px 0 0 0;}
+
+#error-auth, #content-body{padding-top:25px;}
 
 .link-trouble{margin:20px 0 0 0; font-size:12px;}
 
-#selection-list input, #selection-list button{font-size:14px;}
+.btn{width:100%;}
+
+.main-content{position:relative;}
+.btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
+
+#selection-list{font-size:14px;}
+#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-100%; left:0; background:#f0f0f0; padding:15px;}
+#selection-list .btn-close{cursor:pointer; line-height:1em;}
+#selection-list .select-calendar{display:block; width:100%;}
 
 
 @-webkit-keyframes spin {

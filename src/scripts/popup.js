@@ -38,6 +38,17 @@ popupAction.installButtonClickHandlers = function() {
     $('#authorization_required').text(chrome.i18n.getMessage('authorization_in_progress'));
     chrome.extension.sendMessage({method: 'authtoken.update'});
   });
+
+
+  // $('#sync_now').on('click', function() {
+  //   chrome.extension.sendMessage({method: 'events.feed.fetch'},
+  //       browseraction.showEventsFromFeed_);
+  // });
+
+
+  $('#show_options').on('click', function() {
+    chrome.tabs.create({'url': 'options.html'});
+  });
 };
 
 
@@ -119,7 +130,7 @@ popupAction.loadInputSelection = function() {
         placeholder: "Select Group",
       });
 
-      el.find('button').click(function(e){
+      el.find('.btn-create').click(function(e){
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();

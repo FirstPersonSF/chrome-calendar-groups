@@ -12,7 +12,6 @@ feeds.requestInteractiveAuthToken = function() {
   chrome.identity.getAuthToken({'interactive': true}, function (accessToken) {
     if (chrome.runtime.lastError || !authToken) return;
 
-    // feeds.refreshUI();  // Causes the badge text to be updated.
     feeds.fetchCalendars();
   });
 };
@@ -85,11 +84,127 @@ feeds.fetchCalendars = function(type) {
         }
       });
 
+    });
+  });
+};
+
+feeds.putCalendars = function(feed, callback){
+  background.log('feeds.putCalendars()', feed.title);
+
+  var feedUrl = feeds.CALENDAR_LIST_API_URL_ + '/' + encodeURIComponent(feed.id) + '?' + 'colorRgbFormat=false&fields=colorId,selected';
+
+  var obj = JSON.stringify({
+    "selected": (feed.visible)? true : false,
+    "colorId": (feed.colorId)? feed.colorId : 11
+  });
+
+  chrome.identity.getAuthToken({'interactive': false}, function (authToken) {
+    if (chrome.runtime.lastError || !authToken) {
+      background.log('getAuthToken', chrome.runtime.lastError.message);
+      chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
+      feeds.refreshUI();
+      return;
+    }
+
+    $.ajax({
+      type: 'PUT',
+      url: feedUrl,
+      headers: {
+        'Authorization': 'Bearer ' + authToken
+      },
+      data: obj,
+      contentType: "application/json",
+      success: (function(resp) {
+        // console.log('Title: ' + resp.summary + " - selected: " + resp.selected + ' - colorID: ' + resp.colorId + ' - id: ' + resp.id);
+        callback(null);
+
+      })(feed),
+      error: function(response) {
+        chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
+        _gaq.push(['_trackEvent', 'Fetch', 'Error (Events)', response.statusText]);
+        background.log('Fetch Error (Events)', response.statusText);
+        if (response.status === 401) {
+          feeds.refreshUI();
+          chrome.identity.removeCachedAuthToken({ 'token': authToken }, function() {});
+        }
+        // Must callback here, otherwise the caller keeps waiting for all calendars to load.
+        callback(response);
+      }
+    });
+  });
+};
+
+
+feeds.updateSets = function(){
+  background.log('feeds.updateSets()');
+  chrome.extension.sendMessage({method: 'sync-icon.spinning.start'});
+
+  chrome.storage.local.get('calendars', function(storageC) {
+    if (chrome.runtime.lastError) {
+      background.log('Error retrieving settings: ', chrome.runtime.lastError.message);
+    }
+
+    chrome.storage.local.get('sets', function(storageS) {
+      if (chrome.runtime.lastError) {
+        background.log('Error retrieving settings: ', chrome.runtime.lastError.message);
+      }
+
+      var storedCalendars = storageC['calendars'] || {};
+      var storedSets = storageS['sets'] || {};
+
+      var setsObj = _.filter(storedSets, function(obj){
+        return obj.selected === true;
+      });
+
+
+      var newStoredCalendars = {}
+
+      _.each(storedCalendars, function(obj){
+        var calenderSelected = _.find(setsObj[0].selection, function(item){
+          return obj.id === item;
+        });
+
+        var mergedCalendar = {
+          id: obj.id,
+          title: obj.title,
+          editable: obj.accessRole == 'writer' || obj.accessRole == 'owner',
+          description: obj.description || '',
+          foregroundColor: obj.foregroundColor,
+          backgroundColor: obj.backgroundColor,
+          colorId: obj.colorId,
+          visible: false
+        };
+
+        if(calenderSelected){
+          mergedCalendar.visible = true;
+        }
+
+        newStoredCalendars[mergedCalendar.id] = mergedCalendar;
+      });
+
+
+
+      async.each(newStoredCalendars, function(obj, callback){
+        console.log(obj);
+        feeds.putCalendars(obj, function(response){callback(response)});
+
+      }, function(error){
+
+        // if any of the file processing produced an error, err would equal that error
+        if( error ) {
+          // One of the iterations produced an error.
+          // All processing will now stop.
+          console.log('A file failed to process');
+        } else {
+          console.log('All files have been processed successfully');
+        }
+      });
 
 
     });
   });
 };
+
 
 /**
  * Updates the 'minutes/hours/days until' visible badge from the events

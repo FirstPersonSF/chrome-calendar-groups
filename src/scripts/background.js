@@ -1,3 +1,6 @@
+/**
+ * Load Popup Action
+ */
 chrome.runtime.onInstalled.addListener(function() {
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -31,16 +34,29 @@ background.logs_ = [];
  */
 background.initialize = function() {
   background.listenForRequests();
-  background.listenForTabUpdates();
-  scheduler.start();
+  background.start();
 };
 
 background.listenForRequests = function() {
   chrome.extension.onMessage.addListener(function(request, sender, opt_callback) {
     switch(request.method) {
+
       case 'authtoken.update':
         feeds.requestInteractiveAuthToken();
         break;
+
+      // case 'events.feed.fetch':
+      //   feeds.fetchCalendars();
+      //   break;
+
+      // case 'events.sets.uptdate':
+      //   feeds.updateSets();
+      //   break;
+
+      // case 'options.changed':
+      //   feeds.refreshUI();
+      //   break;
+
     }
 
     // Indicates to Chrome that a pending async request will eventually issue
@@ -49,24 +65,12 @@ background.listenForRequests = function() {
   });
 };
 
-background.listenForTabUpdates = function() {
-  // console.log('background.listenForTabUpdates');
-};
-
-
-
-
-
-var scheduler = {};
-scheduler.BADGE_UPDATE_INTERVAL_MS_ = 60 * 1000;
-scheduler.start = function() {
-  // Do a one-time initial fetch on load. Settings are only refreshed when restarting Chrome.
+background.start = function() {
   feeds.fetchCalendars();
 
   window.setInterval(function() {
-    // feeds.refreshUI();
     feeds.fetchCalendars();
-  }, scheduler.BADGE_UPDATE_INTERVAL_MS_);
+  }, 60 * 1000);
 };
 
 
