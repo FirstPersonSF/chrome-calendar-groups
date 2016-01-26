@@ -1,0 +1,49 @@
+{
+  "manifest_version": 2,
+  "name": "Google Calendar Groups",
+  "author": "First Person",
+  "homepage_url": "https://github.com/FirstPersonSF/chrome-calendar-groups",
+  "version": "1.0.0",
+  "description": "Display and hide multiple calendars at once",
+  "default_locale": "en",
+  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzO8gAn6n4s5Ohs50F2lmLGsO0FVKIwYyro8qZHlU+9pF85wGBEqoNwSeawr+AZdLgtnQRkIgatLM68EX8sB0DErp3Ds4qCvY8VufvvDIoqxdKtC3QlFxR9PoUZMY7/4lb/OadWnr0UjekxcSNVyk6nqZkTFCcE7RWDMDZ8qwqsQIDAQAB",
+
+  "permissions": [
+    "identity",
+    "storage",
+    "declarativeContent",
+    "http://calendar.google.com/calendar/*",
+    "https://calendar.google.com/calendar/*"
+  ],
+
+  "oauth2": {
+    "client_id": "840256951321-stskg5tsvdfjcf1c5cthd6n5k54nq7q0.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar"
+    ]
+  },
+
+  "content_security_policy": "script-src 'self' https://calendar.google.com; object-src 'self'",
+
+  "background": {
+    "scripts": [
+      "lib/jquery.min.js",
+      "lib/underscore/underscore.js",
+      "lib/select2/select2.min.js",
+      "scripts/constants.js",
+      "scripts/popup.js",
+      "scripts/feeds.js",
+      "scripts/background.js"
+    ]
+  },
+
+  "page_action": {
+    "default_icon": {
+      "19": "icons/logo_calendar_19.png",
+      "38": "icons/logo_calendar_38.png"
+    },
+    "default_title": "Calendar Groups",
+    "default_popup": "views/popup.html"
+  }
+
+}
