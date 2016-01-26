@@ -56,8 +56,7 @@ popupAction.installButtonClickHandlers = function() {
       selection.find('.select-calendar').select2({
         placeholder: "Select Group"
       });
-      selection.animate({top:0});
-    });
+    }).animate({top:0});
 
     //Init close button
     selection.find('.btn-close').click(function(){

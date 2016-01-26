@@ -188,18 +188,19 @@ feeds.updateSets = function(){
           });
 
         }, function(error){
+          chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
 
           // if any of the file processing produced an error, err would equal that error
           if( error ) {
             // One of the iterations produced an error.
             // All processing will now stop.
-            console.log('A file failed to process');
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            // console.log('A file failed to process');
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           } else {
-            console.log('All files have been processed successfully');
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            // console.log('All files have been processed successfully');
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           }
         });
 
