@@ -89,15 +89,12 @@ feeds.fetchCalendars = function(type) {
 };
 
 feeds.putCalendars = function(feed, callback){
-  var feedUrl = constants.CALENDAR_LIST_API_URL + '/' + encodeURIComponent(feed.id) + '?' + 'colorRgbFormat=false&fields=colorId,selected';
+  var feedUrl = constants.CALENDAR_LIST_API_URL + '/' + encodeURIComponent(feed.id) + '?' + 'colorRgbFormat=false';
 
   var obj = JSON.stringify({
-    "selected": (feed.visible)? true : false,
+    "selected": (feed.selected)? true : false,
     "colorId": (feed.colorId)? feed.colorId : 11
   });
-
-  console.log(feedUrl);
-  console.log(obj);
 
   chrome.identity.getAuthToken({'interactive': false}, function (authToken) {
     if (chrome.runtime.lastError || !authToken) {
@@ -112,13 +109,20 @@ feeds.putCalendars = function(feed, callback){
         'Authorization': 'Bearer ' + authToken
       },
       data: obj,
+      dataType: 'json',
       contentType: "application/json",
-      success: (function(response) {
-        console.log(response);
-        // console.log('Title: ' + resp.summary + " - selected: " + resp.selected + ' - colorID: ' + resp.colorId + ' - id: ' + resp.id);
+      success: function(resp) {
+        // console.log('Passing +++++');
+        // console.log(resp);
+        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
         callback(null);
 
-      }), error: function(response) {
+      },
+      error: function(response) {
+        // console.log(response);
+        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
         chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
         if (response.status === 401) {
           // feeds.refreshUI();
@@ -141,6 +145,7 @@ feeds.updateSets = function(){
       var storedCalendars = calendarsObj['calendars'] || {};
       var storedSets = setsObj['sets'] || {};
       var newStoredCalendars = {};
+      var campareCalendars = {}
 
       var setsObj = _.filter(storedSets, function(obj){
         return obj.selected === true;
@@ -166,29 +171,41 @@ feeds.updateSets = function(){
           mergedCalendar.selected = true;
         }
 
+        var calendarSelected = (calendar.selected)? true : false;
+        if(mergedCalendar.selected != calendarSelected){
+          campareCalendars[mergedCalendar.id] = mergedCalendar;
+        }
         newStoredCalendars[mergedCalendar.id] = mergedCalendar;
       });
 
-      async.each(newStoredCalendars, function(obj, callback){
-        _.defer(function(){
-          feeds.putCalendars(obj, function(response){callback(response)});
+      chrome.storage.local.set({'calendars': newStoredCalendars}, function() {
+        if (chrome.runtime.lastError) return;
+
+        async.each(campareCalendars, function(campareCalendars, callback){
+
+          _.defer(function(){
+            feeds.putCalendars(campareCalendars, function(response){callback(response)});
+          });
+
+        }, function(error){
+
+          // if any of the file processing produced an error, err would equal that error
+          if( error ) {
+            // One of the iterations produced an error.
+            // All processing will now stop.
+            console.log('A file failed to process');
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+          } else {
+            console.log('All files have been processed successfully');
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+          }
         });
 
-      }, function(error){
 
-        // if any of the file processing produced an error, err would equal that error
-        if( error ) {
-          // One of the iterations produced an error.
-          // All processing will now stop.
-          console.log('A file failed to process');
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        } else {
-          console.log('All files have been processed successfully');
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-          console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        }
       });
+
     });
   });
 };
