@@ -145,7 +145,7 @@ feeds.updateSets = function(){
       var storedCalendars = calendarsObj['calendars'] || {};
       var storedSets = setsObj['sets'] || {};
       var newStoredCalendars = {};
-      var campareCalendars = {}
+      var compareCalendars = {}
 
       var setsObj = _.filter(storedSets, function(obj){
         return obj.selected === true;
@@ -173,7 +173,7 @@ feeds.updateSets = function(){
 
         var calendarSelected = (calendar.selected)? true : false;
         if(mergedCalendar.selected != calendarSelected){
-          campareCalendars[mergedCalendar.id] = mergedCalendar;
+          compareCalendars[mergedCalendar.id] = mergedCalendar;
         }
         newStoredCalendars[mergedCalendar.id] = mergedCalendar;
       });
@@ -181,10 +181,10 @@ feeds.updateSets = function(){
       chrome.storage.local.set({'calendars': newStoredCalendars}, function() {
         if (chrome.runtime.lastError) return;
 
-        async.each(campareCalendars, function(campareCalendars, callback){
+        async.each(compareCalendars, function(calendar, callback) {
 
           _.defer(function(){
-            feeds.putCalendars(campareCalendars, function(response){callback(response)});
+            feeds.putCalendars(calendar, function(response){callback(response)});
           });
 
         }, function(error){
