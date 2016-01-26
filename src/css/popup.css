@@ -16,9 +16,12 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 .btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
 
 #selection-list{font-size:14px;}
-#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-100%; left:0; background:#f0f0f0; padding:15px;}
+#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:15px;}
 #selection-list .btn-close{cursor:pointer; line-height:1em;}
 #selection-list .select-calendar{display:block; width:100%;}
+#selection-list .group-name{font-size:14px; padding:5px;}
+
+#group-list .btn-delete{cursor:pointer;}
 
 
 @-webkit-keyframes spin {

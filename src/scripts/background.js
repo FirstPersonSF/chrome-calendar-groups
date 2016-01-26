@@ -45,17 +45,13 @@ background.listenForRequests = function() {
         feeds.requestInteractiveAuthToken();
         break;
 
-      // case 'events.feed.fetch':
+      // case 'events.Calendar.fetch':
       //   feeds.fetchCalendars();
       //   break;
 
-      // case 'events.sets.uptdate':
-      //   feeds.updateSets();
-      //   break;
-
-      // case 'options.changed':
-      //   feeds.refreshUI();
-      //   break;
+      case 'events.sets.uptdate':
+        feeds.updateSets();
+        break;
 
     }
 

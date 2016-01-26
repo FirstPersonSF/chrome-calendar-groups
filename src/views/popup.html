@@ -50,8 +50,17 @@
   </section>
 
   <section id="content-body" class="main-content container-fluid">
+    <!-- Display : Lists -->
+    <article id="group-list">
+      <h2>Selection Groups</h2>
+      <hr>
+      <!-- <p class="error-msg">There are no set group</p> -->
+      <section class="lists"></section>
+    </article>
 
-    <article id="selection-list">
+
+    <!-- Addon : Lists -->
+    <article id="selection-list" class="dropdown">
       <h2>Add Groups <span class="btn-close pull-xs-right">x</span></h2>
       <hr>
       <form>
@@ -59,38 +68,13 @@
           <input type="text" class="form-control group-name" placeholder="Group Name">
         </fieldset>
         <fieldset class="form-group">
-          <select class="select-calendar" name="select-calendar" multiple="multiple">
-            <option value="1">test1</option>
-            <option value="1">test2</option>
-            <option value="1">test3</option>
-            <option value="1">test4</option>
-            <option value="1">test5</option>
-            <option value="1">test6</option>
-            <option value="1">test7</option>
-            <option value="1">test8</option>
-            <option value="1">test9</option>
-          </select>
+          <select class="select-calendar" name="select-calendar" multiple="multiple"></select>
         </fieldset>
         <button type="button" name="button" class="btn-create btn btn-primary">Create</button>
       </form>
     </article>
 
-    <article id="group-list">
-      <h2>Selection Groups</h2>
-      <hr>
-      <!-- <p class="error-msg">There are no set group</p> -->
-      <section class="lists">
-        <div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1">  test test<span class="btn-delete" data-id="1"> [x]</span></label></div>
-        <div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1">  test test<span class="btn-delete" data-id="1"> [x]</span></label></div>
-        <div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1">  test test<span class="btn-delete" data-id="1"> [x]</span></label></div>
-        <div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1">  test test<span class="btn-delete" data-id="1"> [x]</span></label></div>
-
-
-      </section>
-    </article>
   </section>
-
-
 
   <script src="../lib/jquery.min.js"></script>
   <script src="../lib/bootstrap/tether.min.js"></script>
@@ -99,30 +83,6 @@
   <script src="../lib/select2/select2.min.js"></script>
   <script src="../scripts/constants.js"></script>
   <script src="../scripts/popup.js"></script>
-
-  <script type="text/javascript">
-    // $('#content-body').hide();
-    $('#error-auth').hide();
-    var el = $('#selection-list');
-
-    var actionBar = $('#action-bar');
-    actionBar.find('.btn-add-group').click(function(){
-      var el = $('#selection-list');
-      el.show(function(){
-        $(this).css({'top':0});
-        el.find('.select-calendar').select2({
-          placeholder: "Select Group"
-        })
-      });
-
-    });
-
-    el.find('.btn-close').click(function(){
-      $(this).closest('article').hide().css({top:'-100%'})
-    });
-
-  </script>
-
 
 </body>
 </html>

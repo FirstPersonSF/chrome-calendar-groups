@@ -34,9 +34,36 @@ popupAction.fillMessages = function() {
 
 /** @private */
 popupAction.installButtonClickHandlers = function() {
+  var actionBar = $('#action-bar');
+  var selection = $('#selection-list');
+
   $('#authorization_required').on('click', function() {
     $('#authorization_required').text(chrome.i18n.getMessage('authorization_in_progress'));
     chrome.extension.sendMessage({method: 'authtoken.update'});
+  });
+
+  // Add New Groups
+  actionBar.find('.btn-add-group').click(function(){
+
+    // Clear all the fields
+    selection.find('.group-name').val('');
+    if(selection.find('.select-calendar').val()){
+      selection.find('.select-calendar').select2("val", "");
+    }
+
+    // Animation and init select2
+    selection.show(function(){
+      selection.find('.select-calendar').select2({
+        placeholder: "Select Group"
+      });
+      selection.animate({top:0});
+    });
+
+    //Init close button
+    selection.find('.btn-close').click(function(){
+      popupAction.closeAddon();
+    });
+
   });
 
 
@@ -51,6 +78,11 @@ popupAction.installButtonClickHandlers = function() {
   });
 };
 
+popupAction.closeAddon = function(){
+  $('#content-body .dropdown').animate({top:'-600px'}, function(){
+    $(this).hide();
+  });
+};
 
 /**
  * Checks if we're logged in and either shows or hides a message asking
@@ -125,11 +157,6 @@ popupAction.loadInputSelection = function() {
         el.find('.select-calendar').append('<option value="'+calendar.id+'">'+calendar.summary+'</option>');
       });
 
-      // Plugin Select
-      var select2 = el.find('.select-calendar').select2({
-        placeholder: "Select Group",
-      });
-
       el.find('.btn-create').click(function(e){
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
@@ -147,12 +174,7 @@ popupAction.loadInputSelection = function() {
         };
 
         popupAction.tempStorage(obj);
-
-        el.find('.group-name').val('');
-        el.find('.select-calendar').val('');
-        el.find('.select-calendar').select2({
-          data: null
-        });
+        popupAction.closeAddon();
 
       });
 
@@ -181,11 +203,7 @@ popupAction.removeItemStorage = function(itemId){
   chrome.storage.local.get('sets', function(storage) {
 
     var setsStorage = storage['sets'] || {};
-    console.log(itemId);
-
     delete setsStorage[itemId];
-
-    console.log(setsStorage);
 
     chrome.storage.local.set({'sets': setsStorage}, function() {
       if (chrome.runtime.lastError) return;
@@ -207,13 +225,27 @@ popupAction.displaySetsGroup = function(){
     el.find('.lists').empty();
 
     _.each(sets, function(group){
-      el.find('.lists').append('<div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" checked="'+group.selected+'"> '+group.title+' <span class="btn-delete pull-xs-right" data-id="'+group.id+'">[x]</span></label></div>');
+      var checked = (group.selected)? 'checked' : '';
+      el.find('.lists').append('<div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'> '+ group.title+'</label><span class="btn-delete" data-id="'+group.id+'"> [x]</span></div>');
     });
 
+    // Delete button
     el.find('.lists .btn-delete').click(function(){
       popupAction.removeItemStorage($(this).data('id'));
     });
 
+    el.find('.lists input[type=radio]').on('change', function(){
+      var input = $(this);
+      _.each(sets, function(obj){obj.selected = false});
+      sets[input.val()].selected = input.is(':checked');
+
+      chrome.storage.local.set({'sets': sets}, function() {
+        if (chrome.runtime.lastError) return;
+
+        chrome.extension.sendMessage({method: 'events.sets.uptdate'});
+      });
+
+    });
 
   });
 };
