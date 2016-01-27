@@ -111,17 +111,13 @@ feeds.putCalendars = function(feed, callback){
       data: obj,
       dataType: 'json',
       contentType: "application/json",
-      success: function(resp) {
-        // console.log('Passing +++++');
-        // console.log(resp);
-        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+      success: function(response) {
+        console.log('Successful Response:', response);
         callback(null);
 
       },
       error: function(response) {
-        // console.log(response);
-        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-        // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        console.log("Failed Response:", response);
 
         chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
         if (response.status === 401) {
@@ -178,6 +174,8 @@ feeds.updateSets = function(){
         newStoredCalendars[mergedCalendar.id] = mergedCalendar;
       });
 
+      console.log("Compared Calendars: ", compareCalendars);
+
       chrome.storage.local.set({'calendars': newStoredCalendars}, function() {
         if (chrome.runtime.lastError) return;
 
@@ -194,13 +192,11 @@ feeds.updateSets = function(){
           if( error ) {
             // One of the iterations produced an error.
             // All processing will now stop.
-            // console.log('A file failed to process');
-            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+             console.log('A request failed: ', error);
+             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           } else {
-            // console.log('All files have been processed successfully');
-            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+             console.log('All requests were successful');
+             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           }
         });
 
