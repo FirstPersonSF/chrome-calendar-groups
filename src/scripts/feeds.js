@@ -195,6 +195,10 @@ feeds.updateSets = function(){
              console.log('A request failed: ', error);
              console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           } else {
+
+            //Get currrent tab id then reload tab
+            chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){console.debug(d[0].id);}));
+
              console.log('All requests were successful');
              console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           }
