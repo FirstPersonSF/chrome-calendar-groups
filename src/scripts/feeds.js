@@ -199,6 +199,7 @@ feeds.updateSets = function(){
 
             //Get currrent tab id then reload tab
             chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){}));
+            chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
 
             console.log('All requests were successful');
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');

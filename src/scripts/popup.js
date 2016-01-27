@@ -72,7 +72,6 @@ popupAction.addonAddGroup = function(editObj){
 
   // Animation and init select2
   selection.show(function(){
-    var newArray = []
     if(editObj){
       selection.find('.title').attr({'data-id': editObj.id});
       selection.find('.group-name').val(editObj.title);
@@ -80,8 +79,7 @@ popupAction.addonAddGroup = function(editObj){
     }
 
     selection.find('.select-calendar').select2({
-      placeholder: "Select Group",
-      'data': newArray
+      placeholder: "Select Group"
     });
   }).animate({top:0});
 
@@ -133,6 +131,14 @@ popupAction.stopSpinnerRightNow = function() {
   $('#sync_now').removeClass('spinning');
 };
 
+popupAction.disabledFieldset = function() {
+  // $('fieldset').attr('disabled');
+  $('fieldset').prop('disabled', true);
+};
+
+popupAction.enableFieldset = function() {
+  $('fieldset').removeAttr('disabled');
+};
 
 /**
  * Listens for incoming requests from other pages of this extension and calls
@@ -155,6 +161,16 @@ popupAction.listenForRequests = function() {
       case 'sync-icon.spinning.stop':
         popupAction.stopSpinner();
         break;
+
+      case 'fieldset.radio.disabled':
+        console.log('disable');
+        popupAction.disabledFieldset();
+        break;
+
+      case 'fieldset.radio.enable':
+        popupAction.enableFieldset();
+        break;
+
     }
   });
 };
@@ -190,7 +206,6 @@ popupAction.loadInputSelection = function() {
 
         popupAction.tempStorage(obj);
         popupAction.closeAddon();
-
       });
 
     }
@@ -263,6 +278,7 @@ popupAction.displaySetsGroup = function(){
 
     el.find('.lists input[type=radio]').on('change', function(){
       var input = $(this);
+      chrome.extension.sendMessage({method: 'fieldset.radio.disabled'});
       _.each(sets, function(obj){obj.selected = false});
       sets[input.val()].selected = input.is(':checked');
 
