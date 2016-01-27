@@ -44,25 +44,8 @@ popupAction.installButtonClickHandlers = function() {
 
   // Add New Groups
   actionBar.find('.btn-add-group').click(function(){
-
-    // Clear all the fields
-    selection.find('.group-name').val('');
-    if(selection.find('.select-calendar').val()){
-      selection.find('.select-calendar').select2("val", "");
-    }
-
-    // Animation and init select2
-    selection.show(function(){
-      selection.find('.select-calendar').select2({
-        placeholder: "Select Group"
-      });
-    }).animate({top:0});
-
-    //Init close button
-    selection.find('.btn-close').click(function(){
-      popupAction.closeAddon();
-    });
-
+    selection.find('.title').text('Add Groups');
+    popupAction.addonAddGroup();
   });
 
 
@@ -75,6 +58,42 @@ popupAction.installButtonClickHandlers = function() {
   $('#show_options').on('click', function() {
     chrome.tabs.create({'url': 'options.html'});
   });
+};
+
+popupAction.addonAddGroup = function(obj){
+  var selection = $('#selection-list');
+
+  if(!obj){
+    // Clear all the fields
+    selection.find('.group-name').val('');
+    if(selection.find('.select-calendar').val()){
+      selection.find('.select-calendar').select2({
+        val: '',
+        placeholder: "Select Group"
+      });
+    }
+  }else{
+    selection.find('.group-name').val(obj.title);
+    var newArray = []
+    _.each(obj.selection, function(selection){
+      newArray.push({'id':selection, 'text':selection});
+    })
+    console.log(newArray);
+    selection.find('.select-calendar').select2({'data':newArray});
+  }
+
+  // Animation and init select2
+  selection.show(function(){
+    selection.find('.select-calendar').select2({
+      placeholder: "Select Group"
+    });
+  }).animate({top:0});
+
+  //Init close button
+  selection.find('.btn-close').click(function(){
+    popupAction.closeAddon();
+  });
+
 };
 
 popupAction.closeAddon = function(){
@@ -215,7 +234,6 @@ popupAction.removeItemStorage = function(itemId){
   });
 };
 
-
 popupAction.displaySetsGroup = function(){
   chrome.storage.local.get('sets', function(storage) {
 
@@ -225,12 +243,25 @@ popupAction.displaySetsGroup = function(){
 
     _.each(sets, function(group){
       var checked = (group.selected)? 'checked' : '';
-      el.find('.lists').append('<div class="radio"><label><input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'> '+ group.title+'</label><span class="btn-delete" data-id="'+group.id+'"> [x]</span></div>');
+
+      var layout = '<div class="radio"><label>';
+      layout += '<input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'> ';
+      layout += group.title+'</label>';
+      layout += ' <span class="btn-edit fa fa-pencil-square-o" data-id="'+group.id+'"> </span> ';
+      layout += ' <span class="btn-delete fa fa-times" data-id="'+group.id+'"> </span>';
+      // layout += '<p>'+group.selection+'</p>';
+      layout += '</div>';
+      el.find('.lists').append(layout);
     });
 
     // Delete button
     el.find('.lists .btn-delete').click(function(){
       popupAction.removeItemStorage($(this).data('id'));
+    });
+
+    // Edit button
+    el.find('.lists .btn-edit').click(function(){
+      popupAction.addonAddGroup(sets[$(this).data('id')]);
     });
 
     el.find('.lists input[type=radio]').on('change', function(){

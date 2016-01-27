@@ -200,10 +200,10 @@ feeds.updateSets = function(){
           } else {
 
             //Get currrent tab id then reload tab
-            chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){console.debug(d[0].id);}));
+            chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){}));
 
-             console.log('All requests were successful');
-             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            console.log('All requests were successful');
+            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
           }
         });
 
