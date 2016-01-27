@@ -51,7 +51,6 @@ feeds.fetchCalendars = function(type) {
             var mergedCalendar = {
               id: calendar.id,
               summary: calendar.summary,
-              accessRole: calendar.accessRole == 'writer' || calendar.accessRole == 'owner',
               description: calendar.description || '',
               foregroundColor: calendar.foregroundColor,
               backgroundColor: calendar.backgroundColor,
@@ -155,7 +154,6 @@ feeds.updateSets = function(){
         var mergedCalendar = {
           id: calendar.id,
           summary: calendar.summary,
-          accessRole: calendar.accessRole == 'writer' || calendar.accessRole == 'owner',
           description: calendar.description || '',
           foregroundColor: calendar.foregroundColor,
           backgroundColor: calendar.backgroundColor,

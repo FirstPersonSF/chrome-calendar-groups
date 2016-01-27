@@ -44,7 +44,7 @@ popupAction.installButtonClickHandlers = function() {
 
   // Add New Groups
   actionBar.find('.btn-add-group').click(function(){
-    selection.find('.title').text('Add Groups');
+    selection.find('.title').text('Add Groups').attr({'data-id':''});
     popupAction.addonAddGroup();
   });
 
@@ -60,32 +60,28 @@ popupAction.installButtonClickHandlers = function() {
   });
 };
 
-popupAction.addonAddGroup = function(obj){
+popupAction.addonAddGroup = function(editObj){
   var selection = $('#selection-list');
 
-  if(!obj){
-    // Clear all the fields
-    selection.find('.group-name').val('');
-    if(selection.find('.select-calendar').val()){
-      selection.find('.select-calendar').select2({
-        val: '',
-        placeholder: "Select Group"
-      });
-    }
-  }else{
-    selection.find('.group-name').val(obj.title);
-    var newArray = []
-    _.each(obj.selection, function(selection){
-      newArray.push({'id':selection, 'text':selection});
-    })
-    console.log(newArray);
-    selection.find('.select-calendar').select2({'data':newArray});
+  // Clear all the fields
+  selection.find('.group-name').val('');
+  if(selection.find('.select-calendar').val()){
+    selection.find('.select-calendar').select2({val: ''});
   }
+
 
   // Animation and init select2
   selection.show(function(){
+    var newArray = []
+    if(editObj){
+      selection.find('.title').attr({'data-id': editObj.id});
+      selection.find('.group-name').val(editObj.title);
+      selection.find('.select-calendar').val(editObj.selection).trigger("change");
+    }
+
     selection.find('.select-calendar').select2({
-      placeholder: "Select Group"
+      placeholder: "Select Group",
+      'data': newArray
     });
   }).animate({top:0});
 
@@ -179,13 +175,14 @@ popupAction.loadInputSelection = function() {
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();
+        var getId = el.find('title').data('id');
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
           return v.toString(16);
         });
 
         var obj = {
-          'id': uuid,
+          'id': (getId)? getId : uuid,
           "title": title,
           "selection": selection,
           "selected": false
