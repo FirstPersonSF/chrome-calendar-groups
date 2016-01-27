@@ -174,13 +174,16 @@ feeds.updateSets = function(){
         newStoredCalendars[mergedCalendar.id] = mergedCalendar;
       });
 
-      console.log("Compared Calendars: ", compareCalendars);
+      console.log("Calendars affected:");
+      _.each(compareCalendars, function(compareCalendar) {
+        console.log("> " + compareCalendar.summary + ": " + compareCalendar.selected);
+      });
 
       chrome.storage.local.set({'calendars': newStoredCalendars}, function() {
         if (chrome.runtime.lastError) return;
 
+        console.log("Starting API requests -------------------------");
         async.each(compareCalendars, function(calendar, callback) {
-
           _.defer(function(){
             feeds.putCalendars(calendar, function(response){callback(response)});
           });
