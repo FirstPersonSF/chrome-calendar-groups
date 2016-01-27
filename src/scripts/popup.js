@@ -65,10 +65,7 @@ popupAction.addonAddGroup = function(editObj){
 
   // Clear all the fields
   selection.find('.group-name').val('');
-  if(selection.find('.select-calendar').val()){
-    selection.find('.select-calendar').select2({val: ''});
-  }
-
+  selection.find('.select-calendar').val('').trigger("change");
 
   // Animation and init select2
   selection.show(function(){
@@ -191,7 +188,7 @@ popupAction.loadInputSelection = function() {
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();
-        var getId = el.find('title').data('id');
+        var getId = el.find('.title').data('id');
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
           return v.toString(16);
