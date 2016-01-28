@@ -32,7 +32,6 @@
       "lib/async/async.min.js",
       "lib/select2/select2.min.js",
       "scripts/constants.js",
-      "scripts/popup.js",
       "scripts/feeds.js",
       "scripts/background.js"
     ]

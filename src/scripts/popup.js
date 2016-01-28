@@ -8,6 +8,7 @@ popupAction.initialize = function() {
   popupAction.listenForRequests();
   popupAction.loadInputSelection();
   popupAction.displaySetsGroup();
+  console.log('this is loading');
 };
 
 
@@ -255,11 +256,11 @@ popupAction.displaySetsGroup = function(){
 
       var layout = '<div class="radio"><label>';
       layout += '<input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'> ';
-      layout += group.title+'</label>';
-      layout += ' <span class="btn-edit fa fa-pencil-square-o" data-id="'+group.id+'"> </span> ';
-      layout += ' <span class="btn-delete fa fa-times" data-id="'+group.id+'"> </span>';
+      layout += group.title+'</label><div class="icon pull-xs-right">';
+      layout += '<span class="btn-edit fa fa-pencil-square-o" data-id="'+group.id+'"></span> ';
+      layout += '<span class="btn-delete fa fa-times" data-id="'+group.id+'"> </span>';
       // layout += '<p>'+group.selection+'</p>';
-      layout += '</div>';
+      layout += '</div></div>';
       el.find('.lists').append(layout);
     });
 

@@ -21,6 +21,10 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 #selection-list .select-calendar{display:block; width:100%;}
 #selection-list .group-name{font-size:14px; padding:5px;}
 
+.radio{ margin:0; padding:7px 5px;}
+.radio:hover{background:#fafafa;}
+.fa{margin:0 2px;}
+
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
 
 
