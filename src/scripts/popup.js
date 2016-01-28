@@ -7,8 +7,9 @@ popupAction.initialize = function() {
   popupAction.showLoginMessageIfNotAuthenticated();
   popupAction.listenForRequests();
   popupAction.loadInputSelection();
-  popupAction.displaySetsGroup();
-  console.log('this is loading');
+
+  // Update
+  chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
 };
 
 
@@ -50,10 +51,11 @@ popupAction.installButtonClickHandlers = function() {
   });
 
 
-  // $('#sync_now').on('click', function() {
-  //   chrome.extension.sendMessage({method: 'events.feed.fetch'},
-  //       browseraction.showEventsFromFeed_);
-  // });
+  $('#sync_now').on('click', function() {
+    if(!$(this).hasClass('spinning')){
+      chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
+    }
+  });
 
 
   $('#show_options').on('click', function() {
@@ -254,9 +256,9 @@ popupAction.displaySetsGroup = function(){
     _.each(sets, function(group){
       var checked = (group.selected)? 'checked' : '';
 
-      var layout = '<div class="radio"><label>';
-      layout += '<input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'> ';
-      layout += group.title+'</label><div class="icon pull-xs-right">';
+      var layout = '<div class="radio">';
+      layout += '<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'></label>';
+      layout += group.title+'<div class="icon pull-xs-right">';
       layout += '<span class="btn-edit fa fa-pencil-square-o" data-id="'+group.id+'"></span> ';
       layout += '<span class="btn-delete fa fa-times" data-id="'+group.id+'"> </span>';
       // layout += '<p>'+group.selection+'</p>';

@@ -34,7 +34,7 @@ background.logs_ = [];
  */
 background.initialize = function() {
   background.listenForRequests();
-  background.start();
+  feeds.fetchCalendars();
 };
 
 background.listenForRequests = function() {
@@ -45,9 +45,9 @@ background.listenForRequests = function() {
         feeds.requestInteractiveAuthToken();
         break;
 
-      // case 'events.Calendar.fetch':
-      //   feeds.fetchCalendars();
-      //   break;
+      case 'events.Calendar.fetch':
+        feeds.fetchCalendars();
+        break;
 
       case 'events.sets.uptdate':
         feeds.updateSets();
@@ -60,14 +60,5 @@ background.listenForRequests = function() {
     return true;
   });
 };
-
-background.start = function() {
-  feeds.fetchCalendars();
-
-  window.setInterval(function() {
-    feeds.fetchCalendars();
-  }, 60 * 1000);
-};
-
 
 background.initialize();
