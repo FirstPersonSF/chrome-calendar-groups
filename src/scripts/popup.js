@@ -6,7 +6,6 @@ popupAction.initialize = function() {
   popupAction.installButtonClickHandlers();
   popupAction.showLoginMessageIfNotAuthenticated();
   popupAction.listenForRequests();
-  popupAction.loadInputSelection();
 
   // Update
   chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
@@ -62,6 +61,7 @@ popupAction.installButtonClickHandlers = function() {
     }else{
       $(this).text('Edit').css({color:''});
       dad.deactivate();
+      popupAction.setsGroupOrder();
     }
   });
 
@@ -81,9 +81,11 @@ popupAction.addonAddGroup = function(editObj){
   // Animation and init select2
   selection.show(function(){
     if(editObj){
+      var selectionArray = []
+      _.each(editObj.selection, function(item){selectionArray.push(item.id)});
       selection.find('.title').attr({'data-id': editObj.id});
       selection.find('.group-name').val(editObj.title);
-      selection.find('.select-calendar').val(editObj.selection).trigger("change");
+      selection.find('.select-calendar').val(selectionArray).trigger("change");
     }
 
     selection.find('.select-calendar').select2({
@@ -181,16 +183,21 @@ popupAction.loadInputSelection = function() {
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();
-        var getId = el.find('.title').data('id');
+        var setId = el.find('.title').data('id');
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
           return v.toString(16);
         });
 
+        newSelectionData = [];
+        _.each(selection, function(item){
+          newSelectionData.push({id: item, summary: calendars[item].summary })
+        });
+
         var obj = {
-          'id': (getId)? getId : uuid,
+          'id': (setId)? setId : uuid,
           "title": title,
-          "selection": selection,
+          "selection": newSelectionData,
           "selected": false
         };
 
@@ -206,7 +213,11 @@ popupAction.tempStorage = function(sets){
   chrome.storage.local.get('sets', function(storage) {
 
     var setsStorage = storage['sets'] || {};
+    var maxNum = _.max(setsStorage, function(obj){return obj.order;});
+    var order = (_.isEmpty(setsStorage))? 0 : maxNum.order;
+
     setsStorage[sets.id] = sets;
+    setsStorage[sets.id].order = order + 1;
 
     chrome.storage.local.set({'sets': setsStorage}, function() {
       if (chrome.runtime.lastError) return;
@@ -241,10 +252,12 @@ popupAction.displaySetsGroup = function(){
 
     var el = $('#group-list');
     sets = storage['sets'];
+    sortBy = _.sortBy(sets, 'order');
     el.find('.lists').empty();
 
-    _.each(sets, function(group){
-      var checked = (group.selected)? 'checked' : '';
+    _.each(sortBy, function(group){
+      var infoArray = []
+      _.each(group.selection, function(item){return infoArray.push(item.summary)})
 
       var layout = '<div class="item container-fluid" data-id="'+group.id+'"><div class="row">';
       layout += '<div class="btn-change-calendar box col-xs-7">' + group.title + '</div>';
@@ -253,7 +266,7 @@ popupAction.displaySetsGroup = function(){
       layout += '<span class="btn-icon-info fa fa-info-circle"></span>';
       layout += '<span class="btn-icon-more fa fa-caret-square-o-down"><ul class="more-menu"><li class="btn-edit">Edit</li><li class="btn-delete">Delete</li></ul></span>';
       layout += '</div></div></div>';
-      layout += '<div class="tab-info">'+'This is a test'+'</div>';
+      layout += '<div class="tab-info">'+infoArray.join(', ')+'</div>';
       layout += '</div>';
       el.find('.lists').append(layout);
     });
@@ -288,6 +301,22 @@ popupAction.displaySetsGroup = function(){
         });
 
       }
+    });
+
+  });
+};
+
+popupAction.setsGroupOrder = function(){
+  chrome.storage.local.get('sets', function(storage) {
+    var groupList = $('#group-list .lists');
+    var setsStorage = storage['sets'] || {};
+
+    groupList.find('.item').each(function(){
+      setsStorage[$(this).data('id')].order = $(this).data('dad-position');
+    });
+
+    chrome.storage.local.set({'sets': setsStorage}, function() {
+      if (chrome.runtime.lastError) return;
     });
 
   });

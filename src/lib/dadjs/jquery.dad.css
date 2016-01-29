@@ -23,6 +23,12 @@
     clear: both !important;
     display: block;
 }
+
+.dad-active{
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: grab;
+}
 .dad-active .dad-draggable-area{
     cursor: -webkit-grab;
     cursor: -moz-grab;
