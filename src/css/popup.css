@@ -1,4 +1,4 @@
-html, body{width:300px; height:600px;}
+html, body{width:300px; height:400px;}
 h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
 p{font-size:16px; font-weight:300; line-height:1.5em;}
 
@@ -21,31 +21,27 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 #selection-list .select-calendar{display:block; width:100%;}
 #selection-list .group-name{font-size:14px; padding:5px;}
 
-.radio{ margin:0; padding:7px 5px;}
-.radio:hover{background:#fafafa;}
-.fa{margin:0 2px;}
+#group-list .btn-order-list{font-size:14px; cursor:pointer; color:#aaa;}
+#group-list .lists .fa-align-justify{display:none;}
+#group-list .lists.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
+
+
+#group-list .lists .icon-list, #group-list .lists.dad-active .icon-list{display:none;}
+#group-list .lists .item:hover .icon-list{display:block;}
+#group-list .lists.dad-active .item:hover .icon-list{display:none;}
+
+#group-list .btn-icon-more .more-menu{display:none;}
+#group-list .btn-icon-more:hover .more-menu{display:block;}
+#group-list .more-menu{position:absolute; z-index:1; top:75%; right:0; background:#fff; border:1px solid #ccc; margin:0; padding:0;}
+#group-list .more-menu li{list-style:none; padding:7px 20px;}
+#group-list .more-menu li:hover{background:#eee;}
+
+#group-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
+
+
+#group-list .item{position:relative; cursor:pointer;}
+#group-list .item:hover{background:#eee;}
+#group-list .item .box{margin:0; padding:7px 10px;}
+.fa{margin:0 0 0 10px;}
 
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
-
-
-@-webkit-keyframes spin {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
-
-.spinning {
-  -webkit-animation-name: spin;
-          animation-name: spin;
-  -webkit-animation-duration: 1.5s;
-          animation-duration: 1.5s;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-}

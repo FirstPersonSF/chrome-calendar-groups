@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="../lib/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../lib/select2/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/dadjs/jquery.dad.css">
   <link rel="stylesheet" type="text/css" href="../css/popup.css">
 </head>
 <body>
@@ -18,11 +19,6 @@
         </a>
       </div>
       <ul id="action-bar" class="nav navbar-nav pull-xs-right">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <img src="../icons/ic_refresh_white_24dp.png" id="sync_now" class="i18n">
-          </a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
             <span class="btn-add-group">+</span>
@@ -53,10 +49,10 @@
   <section id="content-body" class="main-content container-fluid">
     <!-- Display : Lists -->
     <article id="group-list">
-      <h2>Selection Groups</h2>
+      <h2>My Groups <span class="pull-xs-right btn-order-list">Edit</span></h2>
       <hr>
       <!-- <p class="error-msg">There are no set group</p> -->
-      <fieldset class="lists"></fieldset>
+      <section class="lists"></section>
     </article>
 
 
@@ -82,6 +78,7 @@
   <script src="../lib/bootstrap/bootstrap.min.js"></script>
   <script src="../lib/underscore/underscore-min.js"></script>
   <script src="../lib/select2/select2.min.js"></script>
+  <script src="../lib/dadjs/jquery.dad.js"></script>
   <script src="../scripts/constants.js"></script>
   <script src="../scripts/popup.js"></script>
 

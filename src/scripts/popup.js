@@ -38,6 +38,7 @@ popupAction.fillMessages = function() {
 popupAction.installButtonClickHandlers = function() {
   var actionBar = $('#action-bar');
   var selection = $('#selection-list');
+  var groupsList = $('#group-list');
 
   $('#authorization_required').on('click', function() {
     $('#authorization_required').text(chrome.i18n.getMessage('authorization_in_progress'));
@@ -50,10 +51,14 @@ popupAction.installButtonClickHandlers = function() {
     popupAction.addonAddGroup();
   });
 
-
-  $('#sync_now').on('click', function() {
-    if(!$(this).hasClass('spinning')){
-      chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
+  var dad = $('#group-list .lists').dad().deactivate();
+  groupsList.find('.btn-order-list').click(function(){
+    if($(this).text().toLowerCase() == 'edit'){
+      $(this).text('Done').css({color:'#0275d8'});
+      dad.activate();
+    }else{
+      $(this).text('Edit').css({color:''});
+      dad.deactivate();
     }
   });
 
@@ -106,7 +111,6 @@ popupAction.showLoginMessageIfNotAuthenticated = function() {
     if (chrome.runtime.lastError || !authToken) {
       chrome.extension.getBackgroundPage().background.log('getAuthToken',
           chrome.runtime.lastError.message);
-      popupAction.stopSpinnerRightNow();
       $('#error-auth').show();
       $('#content-body').hide();
     } else {
@@ -114,21 +118,6 @@ popupAction.showLoginMessageIfNotAuthenticated = function() {
       $('#content-body').show();
     }
   });
-};
-
-
-popupAction.startSpinner = function() {
-  $('#sync_now').addClass('spinning');
-};
-
-popupAction.stopSpinner = function() {
-  $('#sync_now').one('animationiteration webkitAnimationIteration', function() {
-    $(this).removeClass('spinning');
-  });
-};
-
-popupAction.stopSpinnerRightNow = function() {
-  $('#sync_now').removeClass('spinning');
 };
 
 popupAction.disabledFieldset = function() {
@@ -152,14 +141,6 @@ popupAction.listenForRequests = function() {
         popupAction.showLoginMessageIfNotAuthenticated();
         popupAction.loadInputSelection();
         popupAction.displaySetsGroup();
-        break;
-
-      case 'sync-icon.spinning.start':
-        popupAction.startSpinner();
-        break;
-
-      case 'sync-icon.spinning.stop':
-        popupAction.stopSpinner();
         break;
 
       case 'fieldset.radio.disabled':
@@ -256,24 +237,32 @@ popupAction.displaySetsGroup = function(){
     _.each(sets, function(group){
       var checked = (group.selected)? 'checked' : '';
 
-      var layout = '<div class="radio">';
-      layout += '<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="'+group.id+'" '+checked+'></label>';
-      layout += group.title+'<div class="icon pull-xs-right">';
-      layout += '<span class="btn-edit fa fa-pencil-square-o" data-id="'+group.id+'"></span> ';
-      layout += '<span class="btn-delete fa fa-times" data-id="'+group.id+'"> </span>';
-      // layout += '<p>'+group.selection+'</p>';
-      layout += '</div></div>';
+      var layout = '<div class="item container-fluid" data-id="'+group.id+'"><div class="row">';
+      layout += '<div class="box col-xs-7">' + group.title + '</div>';
+      layout += '<div class="box col-xs-5"><span class="pull-xs-right fa fa-align-justify"></span>';
+      layout += '<div class="icon-list pull-xs-right">';
+      layout += '<span class="btn-icon-info fa fa-info-circle"></span>';
+      layout += '<span class="btn-icon-more fa fa-caret-square-o-down"><ul class="more-menu"><li class="btn-edit">Edit</li><li class="btn-delete">Delete</li></ul></span>';
+      layout += '</div></div></div>';
+      layout += '<div class="tab-info">'+'This is a test'+'</div>';
+      layout += '</div>';
       el.find('.lists').append(layout);
+    });
+
+    el.find('.btn-icon-info').hover(function(){
+      $(this).closest('.item').find('.tab-info').show();
+    },function(){
+      $(this).closest('.item').find('.tab-info').hide();
     });
 
     // Delete button
     el.find('.lists .btn-delete').click(function(){
-      popupAction.removeItemStorage($(this).data('id'));
+      popupAction.removeItemStorage($(this).closest('.item').data('id'));
     });
 
     // Edit button
     el.find('.lists .btn-edit').click(function(){
-      popupAction.addonAddGroup(sets[$(this).data('id')]);
+      popupAction.addonAddGroup(sets[$(this).closest('.item').data('id')]);
     });
 
     el.find('.lists input[type=radio]').on('change', function(){

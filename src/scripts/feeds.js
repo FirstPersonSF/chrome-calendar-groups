@@ -22,14 +22,11 @@ feeds.requestInteractiveAuthToken = function() {
  * for events from those calendars.
  */
 feeds.fetchCalendars = function(type) {
-  chrome.extension.sendMessage({method: 'sync-icon.spinning.start'});
-
   chrome.storage.local.get('calendars', function(storage) {
 
     var storedCalendars = storage['calendars'] || {};
     chrome.identity.getAuthToken({'interactive': true}, function (authToken) {
       if (chrome.runtime.lastError) {
-        chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
         feeds.refreshUI();
         return;
       }
@@ -74,7 +71,6 @@ feeds.fetchCalendars = function(type) {
           });
         },
         error: function(response) {
-          chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
 
           if (response.status === 401) {
             // feeds.refreshUI();
@@ -96,10 +92,8 @@ feeds.putCalendars = function(feed, callback){
   });
 
   chrome.identity.getAuthToken({'interactive': false}, function (authToken) {
-    if (chrome.runtime.lastError || !authToken) {
-      chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
-      return;
-    }
+    if (chrome.runtime.lastError || !authToken) return;
+
 
     $.ajax({
       type: 'PUT',
@@ -118,7 +112,6 @@ feeds.putCalendars = function(feed, callback){
       error: function(response) {
         console.log("Failed Response:", response);
 
-        chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
         if (response.status === 401) {
           // feeds.refreshUI();
           chrome.identity.removeCachedAuthToken({ 'token': authToken }, function() {});
@@ -132,8 +125,6 @@ feeds.putCalendars = function(feed, callback){
 
 
 feeds.updateSets = function(){
-  chrome.extension.sendMessage({method: 'sync-icon.spinning.start'});
-
   chrome.storage.local.get('calendars', function(calendarsObj) {
     chrome.storage.local.get('sets', function(setsObj) {
 
@@ -187,7 +178,6 @@ feeds.updateSets = function(){
           });
 
         }, function(error){
-          chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
 
           // if any of the file processing produced an error, err would equal that error
           if( error ) {
@@ -198,8 +188,9 @@ feeds.updateSets = function(){
           } else {
 
             //Get currrent tab id then reload tab
+            console.log('hi');
             chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){}));
-            chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
+            // chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
 
             console.log('All requests were successful');
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
@@ -221,6 +212,5 @@ feeds.updateSets = function(){
 feeds.refreshUI = function() {
 
   // Notify the browser action in case it's open.
-  chrome.extension.sendMessage({method: 'sync-icon.spinning.stop'});
   chrome.extension.sendMessage({method: 'ui.refresh'});
 };
