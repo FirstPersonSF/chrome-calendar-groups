@@ -32,6 +32,7 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 #selection-list .select-calendar{display:block; width:100%;}
 #selection-list .group-name{font-size:14px; padding:5px;}
 
+#group-list .btn-change-calendar{cursor:pointer;}
 #group-list .btn-order-list{font-size:14px; cursor:pointer; color:#aaa;}
 #group-list .lists .fa-align-justify{display:none;}
 #group-list .lists.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
@@ -50,10 +51,10 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 #group-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
 
 
-#group-list .item{position:relative; cursor:pointer;}
+#group-list .item{position:relative;}
 #group-list .item:hover{background:#eee;}
 #group-list .item .box{margin:0; padding:7px 10px;}
-.fa{margin:0 0 0 10px;}
+.fa{margin:0 0 0 10px; cursor:pointer;}
 
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
 

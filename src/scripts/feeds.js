@@ -138,8 +138,9 @@ feeds.updateSets = function(){
       });
 
       _.each(storedCalendars, function(calendar){
+        console.log(setsObj[0]);
         var calenderSelected = _.find(setsObj[0].selection, function(item){
-          return calendar.id === item;
+          return calendar.id === item.id;
         });
 
         var mergedCalendar = {
@@ -188,7 +189,7 @@ feeds.updateSets = function(){
           } else {
 
             //Get currrent tab id then reload tab
-            chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){
+            chrome.tabs.query({active:true, windowType:"normal", currentWindow: true},function(d){
               var tabId = d[0].id;
               chrome.tabs.reload(tabId);
               chrome.extension.sendMessage({method: 'fieldset.radio.enable'});

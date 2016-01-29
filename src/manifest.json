@@ -9,7 +9,7 @@
   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzO8gAn6n4s5Ohs50F2lmLGsO0FVKIwYyro8qZHlU+9pF85wGBEqoNwSeawr+AZdLgtnQRkIgatLM68EX8sB0DErp3Ds4qCvY8VufvvDIoqxdKtC3QlFxR9PoUZMY7/4lb/OadWnr0UjekxcSNVyk6nqZkTFCcE7RWDMDZ8qwqsQIDAQAB",
 
   "permissions": [
-    "contextMenus",
+    "tabs",
     "identity",
     "storage",
     "declarativeContent",
@@ -31,10 +31,7 @@
       "lib/jquery.min.js",
       "lib/underscore/underscore.js",
       "lib/async/async.min.js",
-      "lib/select2/select2.min.js",
-      "lib/dadjs/jquery.dad.js",
       "scripts/constants.js",
-      "scripts/popup.js",
       "scripts/feeds.js",
       "scripts/background.js"
     ]
