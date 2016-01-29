@@ -2,6 +2,17 @@ html, body{width:300px; height:400px;}
 h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
 p{font-size:16px; font-weight:300; line-height:1.5em;}
 
+.disabled-click {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  color:#aaa !important;
+}
+
+
+
 #logo_text{font-size:18px; font-weight:400;}
 #action-bar img{width:18px; height:18px;}
 .btn-wrap{margin:40px 0 0 0;}
@@ -45,3 +56,4 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 .fa{margin:0 0 0 10px;}
 
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
+

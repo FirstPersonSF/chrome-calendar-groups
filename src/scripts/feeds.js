@@ -188,9 +188,11 @@ feeds.updateSets = function(){
           } else {
 
             //Get currrent tab id then reload tab
-            console.log('hi');
-            chrome.tabs.reload(chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){}));
-            // chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
+            chrome.tabs.query({active:true,windowType:"normal", currentWindow: true},function(d){
+              var tabId = d[0].id;
+              chrome.tabs.reload(tabId);
+              chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
+            });
 
             console.log('All requests were successful');
             console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');

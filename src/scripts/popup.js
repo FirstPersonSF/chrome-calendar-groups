@@ -51,7 +51,10 @@ popupAction.installButtonClickHandlers = function() {
     popupAction.addonAddGroup();
   });
 
-  var dad = $('#group-list .lists').dad().deactivate();
+  var dad = $('#group-list .lists').dad();
+  if($('html').attr('data-context') == 'page-action'){
+    dad.deactivate();
+  }
   groupsList.find('.btn-order-list').click(function(){
     if($(this).text().toLowerCase() == 'edit'){
       $(this).text('Done').css({color:'#0275d8'});
@@ -121,12 +124,15 @@ popupAction.showLoginMessageIfNotAuthenticated = function() {
 };
 
 popupAction.disabledFieldset = function() {
-  // $('fieldset').attr('disabled');
-  $('fieldset').prop('disabled', true);
+  var groupsList = $('#group-list');
+  groupsList.find('.lists').addClass('disabled-click');
+  groupsList.find('.btn-order-list').addClass('disabled-click');
 };
 
 popupAction.enableFieldset = function() {
-  $('fieldset').removeAttr('disabled');
+  var groupsList = $('#group-list');
+  groupsList.find('.lists').removeClass('disabled-click');
+  groupsList.find('.btn-order-list').removeClass('disabled-click');
 };
 
 /**
@@ -144,7 +150,6 @@ popupAction.listenForRequests = function() {
         break;
 
       case 'fieldset.radio.disabled':
-        console.log('disable');
         popupAction.disabledFieldset();
         break;
 
@@ -238,7 +243,7 @@ popupAction.displaySetsGroup = function(){
       var checked = (group.selected)? 'checked' : '';
 
       var layout = '<div class="item container-fluid" data-id="'+group.id+'"><div class="row">';
-      layout += '<div class="box col-xs-7">' + group.title + '</div>';
+      layout += '<div class="btn-change-calendar box col-xs-7">' + group.title + '</div>';
       layout += '<div class="box col-xs-5"><span class="pull-xs-right fa fa-align-justify"></span>';
       layout += '<div class="icon-list pull-xs-right">';
       layout += '<span class="btn-icon-info fa fa-info-circle"></span>';
@@ -265,18 +270,20 @@ popupAction.displaySetsGroup = function(){
       popupAction.addonAddGroup(sets[$(this).closest('.item').data('id')]);
     });
 
-    el.find('.lists input[type=radio]').on('change', function(){
-      var input = $(this);
-      chrome.extension.sendMessage({method: 'fieldset.radio.disabled'});
-      _.each(sets, function(obj){obj.selected = false});
-      sets[input.val()].selected = input.is(':checked');
+    el.find('.btn-change-calendar').click(function(){
+      var self = $(this);
+      if(!self.hasClass('dad-active')){
+        chrome.extension.sendMessage({method: 'fieldset.radio.disabled'});
+        _.each(sets, function(obj){obj.selected = false});
+        sets[self.closest('.item').data('id')].selected = true;
 
-      chrome.storage.local.set({'sets': sets}, function() {
-        if (chrome.runtime.lastError) return;
+        chrome.storage.local.set({'sets': sets}, function() {
+          if (chrome.runtime.lastError) return;
 
-        chrome.extension.sendMessage({method: 'events.sets.uptdate'});
-      });
+          chrome.extension.sendMessage({method: 'events.sets.uptdate'});
+        });
 
+      }
     });
 
   });
