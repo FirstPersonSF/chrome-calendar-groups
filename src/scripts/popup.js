@@ -46,7 +46,7 @@ popupAction.installButtonClickHandlers = function() {
 
   // Add New Groups
   actionBar.find('.btn-add-group').click(function(){
-    selection.find('.title').text('Add Groups').attr({'data-id':''});
+    selection.find('.main-title').text('Add Groups').attr({'data-id':''});
     popupAction.addonAddGroup();
   });
 
@@ -83,7 +83,7 @@ popupAction.addonAddGroup = function(editObj){
     if(editObj){
       var selectionArray = []
       _.each(editObj.selection, function(item){selectionArray.push(item.id)});
-      selection.find('.title').attr({'data-id': editObj.id});
+      selection.find('.main-title').attr({'data-id': editObj.id});
       selection.find('.group-name').val(editObj.title);
       selection.find('.select-calendar').val(selectionArray).trigger("change");
     }
@@ -183,7 +183,7 @@ popupAction.loadInputSelection = function() {
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();
-        var setId = el.find('.title').data('id');
+        var setId = el.find('.main-title').attr('data-id');
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
           return v.toString(16);
@@ -193,6 +193,8 @@ popupAction.loadInputSelection = function() {
         _.each(selection, function(item){
           newSelectionData.push({id: item, summary: calendars[item].summary })
         });
+
+        console.log(setId);
 
         var obj = {
           'id': (setId)? setId : uuid,
@@ -216,9 +218,13 @@ popupAction.tempStorage = function(sets){
     var maxNum = _.max(setsStorage, function(obj){return obj.order;});
     var order = (_.isEmpty(setsStorage))? 0 : maxNum.order;
 
-    setsStorage[sets.id] = sets;
-    setsStorage[sets.id].order = order + 1;
+    if(setsStorage[sets.id]){
+      sets.order = setsStorage[sets.id].order;
+    }else{
+      sets.order = order + 1;
+    }
 
+    setsStorage[sets.id] = sets;
     chrome.storage.local.set({'sets': setsStorage}, function() {
       if (chrome.runtime.lastError) return;
 
@@ -251,9 +257,11 @@ popupAction.displaySetsGroup = function(){
   chrome.storage.local.get('sets', function(storage) {
 
     var el = $('#group-list');
-    sets = storage['sets'];
+    sets = storage['sets'] || {};
     sortBy = _.sortBy(sets, 'order');
     el.find('.lists').empty();
+
+    console.log(sets);
 
     _.each(sortBy, function(group){
       var infoArray = []
@@ -266,7 +274,7 @@ popupAction.displaySetsGroup = function(){
       layout += '<span class="btn-icon-info fa fa-info-circle"></span>';
       layout += '<span class="btn-icon-more fa fa-caret-square-o-down"><ul class="more-menu"><li class="btn-edit">Edit</li><li class="btn-delete">Delete</li></ul></span>';
       layout += '</div></div></div>';
-      layout += '<div class="tab-info">'+infoArray.join(', ')+'</div>';
+      layout += '<div class="tab-info">' + group.id +infoArray.join(', ')+'</div>';
       layout += '</div>';
       el.find('.lists').append(layout);
     });
@@ -315,8 +323,10 @@ popupAction.setsGroupOrder = function(){
       setsStorage[$(this).data('id')].order = $(this).data('dad-position');
     });
 
+    console.log(setsStorage);
     chrome.storage.local.set({'sets': setsStorage}, function() {
       if (chrome.runtime.lastError) return;
+      popupAction.displaySetsGroup();
     });
 
   });
