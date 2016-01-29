@@ -192,6 +192,7 @@ feeds.updateSets = function(){
               var tabId = d[0].id;
               chrome.tabs.reload(tabId);
               chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
+              chrome.extension.sendMessage({method: 'ui.close'});
             });
 
             console.log('All requests were successful');

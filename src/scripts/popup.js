@@ -157,6 +157,10 @@ popupAction.listenForRequests = function() {
         popupAction.enableFieldset();
         break;
 
+      case 'ui.close':
+        window.close();
+        break;
+
     }
   });
 };
