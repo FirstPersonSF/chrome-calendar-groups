@@ -320,7 +320,7 @@ popupAction.displaySetsGroup = function(){
       layout += '<span class="btn-icon-info fa fa-info-circle"></span>';
       layout += '<span class="btn-icon-more fa fa-caret-square-o-down"><ul class="more-menu"><li class="btn-edit">Edit</li><li class="btn-delete">Delete</li></ul></span>';
       layout += '</div></div></div>';
-      layout += '<div class="tab-info">' + group.id +infoArray.join(', ')+'</div>';
+      layout += '<div class="tab-info">'+infoArray.join(', ')+'</div>';
       layout += '</div>';
       el.find('.lists').append(layout);
     });
