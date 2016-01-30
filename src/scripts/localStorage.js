@@ -3,35 +3,36 @@
  * @namespace
  */
 var storage = {}
+storage.local = {}
 
 
 /**
  * Initializes the local Storage by registering listeners.
  */
 storage.initialize = function() {
-  storage.getGroup ();
+  // storage.local.getSets();
 };
 
 
 storage.setCalendars = function(){};
 storage.getCalendars= function(){};
 
-storage.setGroup = function(data, callback){
-  chrome.storage.local.set({'sets': setsStorage}, function() {
+storage.local.putSets = function(data, callback){
+  chrome.storage.local.set({'sets': data}, function() {
     if (chrome.runtime.lastError) return;
 
-    callback();
+    if(callback) callback();
   });
 };
 
 
-storage.getGroup = function(callback){
+storage.local.getSets = function(callback){
   chrome.storage.local.get('sets', function(storage) {
     if (chrome.runtime.lastError) return;
 
-    var groups = storage['sets'] || {};
+    var sets = storage['sets'] || {};
 
-    // callback(groups);
+    if(callback) callback(sets);
   });
 };
 

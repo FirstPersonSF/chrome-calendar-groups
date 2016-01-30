@@ -1,7 +1,23 @@
+/**
+ * Namespace for Page action functionality.
+ */
 var popupAction = {};
 
+/**
+ * Store Set timeout var global use.
+ */
 popupAction.settimeout = {}
 
+/**
+ * Store Html main Element.
+ */
+popupAction.elem = {
+  groupList : 'group-list'
+}
+
+/**
+ * Initializes UI elements in the Page action popup.
+ */
 popupAction.initialize = function() {
   popupAction.fillMessages();
   popupAction.installButtonClickHandlers();
@@ -13,6 +29,10 @@ popupAction.initialize = function() {
 };
 
 
+/**
+ * Retrieves internationalized messages and loads them into the UI.
+ * @private
+ */
 popupAction.fillMessages = function() {
 
   // Load internationalized messages.
@@ -30,11 +50,12 @@ popupAction.fillMessages = function() {
       $(this).text(i18nText);
     }
   });
-
-  // $('[data-href="calendar_ui_url"]').attr('href', constants.CALENDAR_UI_URL);
 };
 
-/** @private */
+/**
+ * Setup icon event handler
+ * @private
+ */
 popupAction.installButtonClickHandlers = function() {
   var actionBar = $('#action-bar');
   var selection = $('#selection-list');
@@ -60,7 +81,7 @@ popupAction.installButtonClickHandlers = function() {
     }else{
       $(this).text('Edit').css({color:''});
       dad.deactivate();
-      popupAction.setsGroupOrder();
+      popupAction.putSetsOrder();
     }
   });
 
@@ -299,6 +320,8 @@ popupAction.displaySetsGroup = function(){
     var el = $('#group-list');
     sets = storage['sets'] || {};
 
+    console.log('Get', sets);
+
     if(_.isEmpty(sets)){
       el.find('.error-msg').fadeIn();
       el.find('.lists, .btn-order-list').hide();
@@ -366,22 +389,22 @@ popupAction.displaySetsGroup = function(){
   });
 };
 
-popupAction.setsGroupOrder = function(){
-  chrome.storage.local.get('sets', function(storage) {
-    var groupList = $('#group-list .lists');
-    var setsStorage = storage['sets'] || {};
+
+/**
+ * Retrieve Sets object form Local storage and save the new
+ * order that that was assign to set. Update View after save.
+ */
+popupAction.putSetsOrder = function(){
+  storage.local.getSets(function(setsStorage){
+    var groupList = $('#' + popupAction.elem.groupList + ' .lists' );
 
     groupList.find('.item').each(function(){
       setsStorage[$(this).data('id')].order = $(this).data('dad-position');
+      // console.log(setsStorage[$(this).data('id')]);
     });
 
-    chrome.storage.local.set({'sets': setsStorage}, function() {
-      if (chrome.runtime.lastError) return;
-      popupAction.displaySetsGroup();
-    });
-
-
-
+    console.log('Set: ',setsStorage);
+    storage.local.putSets(setsStorage, popupAction.displaySetsGroup());
   });
 };
 

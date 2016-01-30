@@ -2,15 +2,22 @@
 <html>
 <head>
   <meta charset="utf-8">
+
+  <!-- Css : Fonts -->
   <link type="text/css" href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <!-- Css : Library -->
   <link rel="stylesheet" type="text/css" href="../lib/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="../lib/select2/select2.min.css">
   <link rel="stylesheet" type="text/css" href="../lib/dadjs/jquery.dad.css">
+
+  <!-- Css : Custom -->
   <link rel="stylesheet" type="text/css" href="../css/popup.css">
 </head>
 <body>
 
+  <!-- Main Header -->
   <header class="main-header">
     <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
       <div>
@@ -18,6 +25,8 @@
           <span id="logo_text">Calendar Sets</span>
         </a>
       </div>
+
+      <!-- Nav List : Icon function -->
       <ul id="action-bar" class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <a class="nav-link" href="#">
@@ -32,9 +41,10 @@
         </li>
         -->
       </ul>
-    </nav>
-  </header>
+    </nav><!-- Nav List : End -->
+  </header><!-- Main Header : End -->
 
+  <!-- Display Auth -->
   <section id="error-auth" class="main-content container-fluid">
     <article>
       <p class="i18n" id="authorization_explanation"></p>
@@ -45,8 +55,9 @@
         <a class="i18n" id="problems" target="_blank" href="https://github.com/FirstPersonSF/chrome-calendar-groups/issues">Problems</a>
       </div>
     </article>
-  </section>
+  </section><!-- Display Auth : End -->
 
+  <!-- Main Content -->
   <section id="content-body" class="main-content container-fluid">
     <!-- Display : Lists -->
     <article id="group-list">
@@ -58,7 +69,7 @@
       <section class="lists"></section>
     </article>
 
-    <!-- Addon : Lists -->
+    <!-- Addon Lists : Start here - Add "dropdown" class global animation -->
     <article id="selection-list" class="dropdown">
       <h2><span class="main-title">Add Groups</span> <span class="btn-close pull-xs-right fa fa-times"></span></h2>
       <hr>
@@ -72,16 +83,17 @@
         <button type="button" name="button" class="btn btn-primary">Create</button>
       </form>
     </article>
-
-  </section>
+  </section><!-- Main Content : End -->
 
   <footer class="main-footer">
+    <!-- Alert -->
     <div class="alert alert-danger" role="alert">
       <span class="btn-close pull-xs-right fa fa-times"></span>
       <div class="msg"></div>
-    </div>
+    </div><!-- Alert : End -->
   </footer>
 
+  <!-- Javascript : Library -->
   <script src="../lib/jquery.min.js"></script>
   <script src="../lib/bootstrap/tether.min.js"></script>
   <script src="../lib/bootstrap/bootstrap.min.js"></script>
@@ -89,6 +101,7 @@
   <script src="../lib/select2/select2.min.js"></script>
   <script src="../lib/dadjs/jquery.dad.js"></script>
 
+  <!-- Javascript : Custom  -->
   <script src="../scripts/localStorage.js"></script>
   <script src="../scripts/constants.js"></script>
   <script src="../scripts/popup.js"></script>
