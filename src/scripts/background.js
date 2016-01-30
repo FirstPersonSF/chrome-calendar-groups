@@ -27,7 +27,6 @@ chrome.runtime.onInstalled.addListener(function() {
  * @namespace
  */
 var background = {};
-background.logs_ = [];
 
 /**
  * Initializes the background page by registering listeners.
@@ -37,6 +36,11 @@ background.initialize = function() {
   feeds.fetchCalendars();
 };
 
+/**
+ * Listens for incoming RPC calls from the browser action and content scripts
+ * and takes the appropriate actions.
+ * @private
+ */
 background.listenForRequests = function() {
   chrome.extension.onMessage.addListener(function(request, sender, opt_callback) {
     switch(request.method) {

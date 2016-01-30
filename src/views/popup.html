@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-context="page-action">
+<html>
 <head>
   <meta charset="utf-8">
   <link type="text/css" href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet'>
@@ -11,11 +11,11 @@
 </head>
 <body>
 
-  <header>
-    <nav class="navbar navbar-full navbar-dark bg-primary">
+  <header class="main-header">
+    <nav class="navbar navbar-fixed-top navbar-dark bg-primary">
       <div>
         <a class="navbar-brand" data-href="calendar_ui_url" target="_blank">
-          <span class="i18n" id="logo_text">Google Calendar</span>
+          <span id="logo_text">Calendar Sets</span>
         </a>
       </div>
       <ul id="action-bar" class="nav navbar-nav pull-xs-right">
@@ -24,15 +24,16 @@
             <span class="btn-add-group">+</span>
           </a>
         </li>
+        <!--
         <li class="nav-item">
           <a class="nav-link" href="#">
             <img src="../icons/ic_settings_white_24dp.png" id="show_options" class="i18n">
           </a>
         </li>
+        -->
       </ul>
     </nav>
   </header>
-
 
   <section id="error-auth" class="main-content container-fluid">
     <article>
@@ -53,10 +54,9 @@
         <span class="pull-xs-right btn-order-list">Edit</span>
       </h2>
       <hr>
-      <!-- <p class="error-msg">There are no set group</p> -->
+      <p class="error-msg text-xs-center">There are no groups</p>
       <section class="lists"></section>
     </article>
-
 
     <!-- Addon : Lists -->
     <article id="selection-list" class="dropdown">
@@ -69,11 +69,18 @@
         <fieldset class="form-group">
           <select class="select-calendar" name="select-calendar" multiple="multiple"></select>
         </fieldset>
-        <button type="button" name="button" class="btn-create btn btn-primary">Create</button>
+        <button type="button" name="button" class="btn btn-primary">Create</button>
       </form>
     </article>
 
   </section>
+
+  <footer class="main-footer">
+    <div class="alert alert-danger" role="alert">
+      <span class="btn-close pull-xs-right fa fa-times"></span>
+      <div class="msg"></div>
+    </div>
+  </footer>
 
   <script src="../lib/jquery.min.js"></script>
   <script src="../lib/bootstrap/tether.min.js"></script>
@@ -81,6 +88,8 @@
   <script src="../lib/underscore/underscore-min.js"></script>
   <script src="../lib/select2/select2.min.js"></script>
   <script src="../lib/dadjs/jquery.dad.js"></script>
+
+  <script src="../scripts/localStorage.js"></script>
   <script src="../scripts/constants.js"></script>
   <script src="../scripts/popup.js"></script>
 </body>

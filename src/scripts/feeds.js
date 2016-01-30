@@ -41,9 +41,13 @@ feeds.fetchCalendars = function(type) {
           _.each(data.items, function(calendar){
             var storedCalendar = storedCalendars[calendar.id] || {};
             var calendarSelected = (calendar.selected)? true : false;
+            var visible = calendarSelected;
 
-            var visible = (typeof storedCalendar.selected !== 'undefined') ?
+            // Update storage update
+            if(type == 'update'){
+              visible = (typeof storedCalendar.selected !== 'undefined') ?
                 storedCalendar.selected : calendar.selected;
+            }
 
             var mergedCalendar = {
               id: calendar.id,
@@ -55,18 +59,17 @@ feeds.fetchCalendars = function(type) {
               selected: visible
             };
 
-            if(storedCalendar.selected !== calendarSelected){
-              // feeds.putCalendars(mergedCalendar, function(obj){});
-            }
+
+            // if(storedCalendar.selected !== calendarSelected){
+            //   // feeds.putCalendars(mergedCalendar, function(obj){});
+            // }
 
             calendars[calendar.id] = mergedCalendar;
           });
 
           chrome.storage.local.set({'calendars': calendars}, function() {
-            if (chrome.runtime.lastError) {
-              background.log('Error saving settings: ', chrome.runtime.lastError.message);
-              return;
-            }
+            if (chrome.runtime.lastError) return;
+
             feeds.refreshUI();
           });
         },

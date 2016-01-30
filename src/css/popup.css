@@ -1,4 +1,4 @@
-html, body{width:300px; height:400px;}
+html, body{position:relative; width:300px; height:400px; min-height:400px; max-height:400px;}
 h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
 p{font-size:16px; font-weight:300; line-height:1.5em;}
 
@@ -11,8 +11,6 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
   color:#aaa !important;
 }
 
-
-
 #logo_text{font-size:18px; font-weight:400;}
 #action-bar img{width:18px; height:18px;}
 .btn-wrap{margin:40px 0 0 0;}
@@ -23,22 +21,21 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 .btn{width:100%;}
 
-.main-content{position:relative;}
+.main-content{position:relative; margin:54px 0 0 0;}
 .btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
 
 #selection-list{font-size:14px;}
-#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:15px;}
+#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:25px 15px 15px 15px;}
 #selection-list .btn-close{cursor:pointer; line-height:1em;}
 #selection-list .select-calendar{display:block; width:100%;}
 #selection-list .group-name{font-size:14px; padding:5px;}
 
 #group-list .btn-change-calendar{cursor:pointer;}
-#group-list .btn-order-list{font-size:14px; cursor:pointer; color:#aaa;}
+#group-list .btn-order-list{display:none; font-size:14px; cursor:pointer; color:#aaa;}
 #group-list .lists .fa-align-justify{display:none;}
 #group-list .lists.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
 
-
-#group-list .lists .icon-list, #group-list .lists.dad-active .icon-list{display:none;}
+#group-list .lists, #group-list .error-msg, #group-list .lists .icon-list, #group-list .lists.dad-active .icon-list{display:none;}
 #group-list .lists .item:hover .icon-list{display:block;}
 #group-list .lists.dad-active .item:hover .icon-list{display:none;}
 
@@ -58,3 +55,6 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
 
+.main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:20;}
+.main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px;}
+.main-footer .alert .btn-close{margin:3px 0 0 0;}

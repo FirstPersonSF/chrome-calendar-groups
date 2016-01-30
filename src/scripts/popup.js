@@ -1,5 +1,6 @@
 var popupAction = {};
 
+popupAction.settimeout = {}
 
 popupAction.initialize = function() {
   popupAction.fillMessages();
@@ -30,7 +31,7 @@ popupAction.fillMessages = function() {
     }
   });
 
-  $('[data-href="calendar_ui_url"]').attr('href', constants.CALENDAR_UI_URL);
+  // $('[data-href="calendar_ui_url"]').attr('href', constants.CALENDAR_UI_URL);
 };
 
 /** @private */
@@ -47,13 +48,11 @@ popupAction.installButtonClickHandlers = function() {
   // Add New Groups
   actionBar.find('.btn-add-group').click(function(){
     selection.find('.main-title').text('Add Groups').attr({'data-id':''});
+    selection.find('.btn').text('Create');
     popupAction.addonAddGroup();
   });
 
-  var dad = $('#group-list .lists').dad();
-  if($('html').attr('data-context') == 'page-action'){
-    dad.deactivate();
-  }
+  var dad = $('#group-list .lists').dad().deactivate();
   groupsList.find('.btn-order-list').click(function(){
     if($(this).text().toLowerCase() == 'edit'){
       $(this).text('Done').css({color:'#0275d8'});
@@ -81,6 +80,8 @@ popupAction.addonAddGroup = function(editObj){
   // Animation and init select2
   selection.show(function(){
     if(editObj){
+      selection.find('.main-title').text('Edit Groups');
+      selection.find('.btn').text('Edit');
       var selectionArray = []
       _.each(editObj.selection, function(item){selectionArray.push(item.id)});
       selection.find('.main-title').attr({'data-id': editObj.id});
@@ -137,6 +138,41 @@ popupAction.enableFieldset = function() {
   groupsList.find('.btn-order-list').removeClass('disabled-click');
 };
 
+popupAction.alert = function(msg, type){
+  var footer = $('.main-footer');
+  footer.find('.alert').removeClass('alert-success, alert-info, alert-warning, alert-danger');
+
+  if(popupAction.settimeout.alert) clearTimeout(popupAction.settimeout.alert);
+
+  switch(type){
+    case "success":
+      footer.find('.alert').addClass('alert-success');
+      break;
+    case "info":
+      footer.find('.alert').addClass('alert-info');
+      break;
+    case "warning":
+      footer.find('.alert').addClass('alert-warning');
+      break;
+    default:
+      footer.find('.alert').addClass('alert-danger');
+      break;
+  }
+
+  footer.find('.alert .msg').html(msg);
+  footer.find('.alert').fadeIn();
+
+  popupAction.settimeout.alert = setTimeout(function(){
+    footer.find('.alert').fadeOut();
+  }, 5000);
+
+  footer.find('.alert .btn-close').click(function(){
+    footer.find('.alert').fadeOut();
+  });
+};
+
+
+
 /**
  * Listens for incoming requests from other pages of this extension and calls
  * the appropriate (local) functions.
@@ -179,7 +215,8 @@ popupAction.loadInputSelection = function() {
         el.find('.select-calendar').append('<option value="'+calendar.id+'">'+calendar.summary+'</option>');
       });
 
-      el.find('.btn-create').click(function(e){
+      //Create Groups
+      el.find('.btn').click(function(e){
         e.preventDefault();
         var selection = el.find('.select-calendar').val();
         var title = el.find('.group-name').val();
@@ -194,8 +231,6 @@ popupAction.loadInputSelection = function() {
           newSelectionData.push({id: item, summary: calendars[item].summary })
         });
 
-        console.log(setId);
-
         var obj = {
           'id': (setId)? setId : uuid,
           "title": title,
@@ -203,8 +238,12 @@ popupAction.loadInputSelection = function() {
           "selected": false
         };
 
-        popupAction.tempStorage(obj);
-        popupAction.closeAddon();
+        if(selection && title ){
+          popupAction.tempStorage(obj);
+          popupAction.closeAddon();
+        }else{
+          popupAction.alert('Please, fill in all the fields.');
+        }
       });
 
     }
@@ -258,10 +297,17 @@ popupAction.displaySetsGroup = function(){
 
     var el = $('#group-list');
     sets = storage['sets'] || {};
+
+    if(_.isEmpty(sets)){
+      el.find('.error-msg').fadeIn();
+      el.find('.lists, .btn-order-list').hide();
+      return;
+    }
+    el.find('.btn-order-list').hide();
+
+
     sortBy = _.sortBy(sets, 'order');
     el.find('.lists').empty();
-
-    console.log(sets);
 
     _.each(sortBy, function(group){
       var infoArray = []
@@ -278,6 +324,11 @@ popupAction.displaySetsGroup = function(){
       layout += '</div>';
       el.find('.lists').append(layout);
     });
+
+    // Show List
+    el.find('.error-msg').hide();
+    el.find('.lists').fadeIn();
+    if(sortBy.length > 1) el.find('.btn-order-list').fadeIn();
 
     el.find('.btn-icon-info').hover(function(){
       $(this).closest('.item').find('.tab-info').show();
@@ -323,11 +374,12 @@ popupAction.setsGroupOrder = function(){
       setsStorage[$(this).data('id')].order = $(this).data('dad-position');
     });
 
-    console.log(setsStorage);
     chrome.storage.local.set({'sets': setsStorage}, function() {
       if (chrome.runtime.lastError) return;
       popupAction.displaySetsGroup();
     });
+
+
 
   });
 };
