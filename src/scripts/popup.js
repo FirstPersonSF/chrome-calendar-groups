@@ -141,6 +141,7 @@ popupAction.enableFieldset = function() {
 popupAction.alert = function(msg, type){
   var footer = $('.main-footer');
   footer.find('.alert').removeClass('alert-success, alert-info, alert-warning, alert-danger');
+  footer.find('.alert .msg').empty();
 
   if(popupAction.settimeout.alert) clearTimeout(popupAction.settimeout.alert);
 
@@ -163,11 +164,11 @@ popupAction.alert = function(msg, type){
   footer.find('.alert').fadeIn();
 
   popupAction.settimeout.alert = setTimeout(function(){
-    footer.find('.alert').fadeOut();
+    footer.find('.alert').hide();
   }, 5000);
 
-  footer.find('.alert .btn-close').click(function(){
-    footer.find('.alert').fadeOut();
+  footer.find('.alert').click(function(){
+    footer.find('.alert').hide();
   });
 };
 

@@ -56,5 +56,5 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 #group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
 
 .main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:20;}
-.main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px;}
+.main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px; cursor:pointer;}
 .main-footer .alert .btn-close{margin:3px 0 0 0;}
