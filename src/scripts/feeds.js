@@ -195,7 +195,7 @@ feeds.updateSets = function(){
             chrome.tabs.query({active:true, windowType:"normal", currentWindow: true},function(d){
               var tabId = d[0].id;
               chrome.tabs.reload(tabId);
-              chrome.extension.sendMessage({method: 'fieldset.radio.enable'});
+              chrome.extension.sendMessage({method: 'selection.sets.enable'});
               chrome.extension.sendMessage({method: 'ui.close'});
             });
 

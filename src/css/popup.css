@@ -21,39 +21,39 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 .btn{width:100%;}
 
-.main-content{position:relative; margin:54px 0 0 0;}
+.header-padding{position:relative; margin-top:54px; padding-top:25px;}
 .btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
 
-#selection-list{font-size:14px;}
-#selection-list{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:25px 15px 15px 15px;}
-#selection-list .btn-close{cursor:pointer; line-height:1em;}
-#selection-list .select-calendar{display:block; width:100%;}
-#selection-list .group-name{font-size:14px; padding:5px;}
+#create-sets{font-size:14px;}
+#create-sets{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:25px 15px 15px 15px;}
+#create-sets .btn-close{cursor:pointer; line-height:1em;}
+#create-sets .select-calendar{display:block; width:100%;}
+#create-sets .group-name{font-size:14px; padding:5px;}
 
-#group-list .btn-change-calendar{cursor:pointer;}
-#group-list .btn-order-list{display:none; font-size:14px; cursor:pointer; color:#aaa;}
-#group-list .lists .fa-align-justify{display:none;}
-#group-list .lists.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
+#sets-list .btn-change-calendar{cursor:pointer;}
+#sets-list .btn-order-list{display:none; font-size:14px; cursor:pointer; color:#aaa;}
+#sets-list .list .fa-align-justify{display:none;}
+#sets-list .list.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
 
-#group-list .lists, #group-list .error-msg, #group-list .lists .icon-list, #group-list .lists.dad-active .icon-list{display:none;}
-#group-list .lists .item:hover .icon-list{display:block;}
-#group-list .lists.dad-active .item:hover .icon-list{display:none;}
+#sets-list .list, #sets-list .msg, #sets-list .list .icon-list, #sets-list .list.dad-active .icon-list{display:none;}
+#sets-list .list .item:hover .icon-list{display:block;}
+#sets-list .list.dad-active .item:hover .icon-list{display:none;}
 
-#group-list .btn-icon-more .more-menu{display:none;}
-#group-list .btn-icon-more:hover .more-menu{display:block;}
-#group-list .more-menu{position:absolute; z-index:1; top:75%; right:0; background:#fff; border:1px solid #ccc; margin:0; padding:0;}
-#group-list .more-menu li{list-style:none; padding:7px 20px;}
-#group-list .more-menu li:hover{background:#eee;}
+#sets-list .btn-icon-more .more-menu{display:none;}
+#sets-list .btn-icon-more:hover .more-menu{display:block;}
+#sets-list .more-menu{position:absolute; z-index:1; top:75%; right:0; background:#fff; border:1px solid #ccc; margin:0; padding:0;}
+#sets-list .more-menu li{list-style:none; padding:7px 20px;}
+#sets-list .more-menu li:hover{background:#eee;}
 
-#group-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
+#sets-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
 
 
-#group-list .item{position:relative;}
-#group-list .item:hover{background:#eee;}
-#group-list .item .box{margin:0; padding:7px 10px;}
+#sets-list .item{position:relative;}
+#sets-list .item:hover{background:#eee;}
+#sets-list .item .box{margin:0; padding:7px 10px;}
 .fa{margin:0 0 0 10px; cursor:pointer;}
 
-#group-list .btn-delete, #group-list .btn-edit{cursor:pointer;}
+#sets-list .btn-delete, #sets-list .btn-edit{cursor:pointer;}
 
 .main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:20;}
 .main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px; cursor:pointer;}

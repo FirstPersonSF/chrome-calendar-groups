@@ -32,7 +32,8 @@
       "lib/underscore/underscore.js",
       "lib/async/async.min.js",
       "scripts/constants.js",
-      "scripts/localStorage.js",
+      "scripts/auth.js",
+      "scripts/storage.js",
       "scripts/feeds.js",
       "scripts/background.js"
     ]

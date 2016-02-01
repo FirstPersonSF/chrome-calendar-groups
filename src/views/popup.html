@@ -45,7 +45,7 @@
   </header><!-- Main Header : End -->
 
   <!-- Display Auth -->
-  <section id="error-auth" class="main-content container-fluid">
+  <section id="error-auth" class="header-padding container-fluid">
     <article>
       <p class="i18n" id="authorization_explanation"></p>
       <div class="btn-wrap text-xs-center">
@@ -58,19 +58,19 @@
   </section><!-- Display Auth : End -->
 
   <!-- Main Content -->
-  <section id="content-body" class="main-content container-fluid">
+  <section id="main-content" class="header-padding container-fluid">
     <!-- Display : Lists -->
-    <article id="group-list">
+    <article id="sets-list">
       <h2>My Groups
         <span class="pull-xs-right btn-order-list">Edit</span>
       </h2>
       <hr>
-      <p class="error-msg text-xs-center">There are no groups</p>
-      <section class="lists"></section>
+      <p class="msg text-xs-center">There are no groups</p>
+      <section class="list"></section>
     </article>
 
     <!-- Addon Lists : Start here - Add "dropdown" class global animation -->
-    <article id="selection-list" class="dropdown">
+    <article id="create-sets" class="dropdown">
       <h2><span class="main-title">Add Groups</span> <span class="btn-close pull-xs-right fa fa-times"></span></h2>
       <hr>
       <form>
@@ -102,8 +102,9 @@
   <script src="../lib/dadjs/jquery.dad.js"></script>
 
   <!-- Javascript : Custom  -->
-  <script src="../scripts/localStorage.js"></script>
   <script src="../scripts/constants.js"></script>
+  <script src="../scripts/auth.js"></script>
+  <script src="../scripts/storage.js"></script>
   <script src="../scripts/popup.js"></script>
 </body>
 </html>

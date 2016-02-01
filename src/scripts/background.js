@@ -65,4 +65,8 @@ background.listenForRequests = function() {
   });
 };
 
+
+/**
+ * Initializes
+ */
 background.initialize();
