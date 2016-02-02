@@ -17,7 +17,7 @@ storage.local = {}
  * @Public
  */
 storage.local.putCalendars = function(data, callback){
-  chrome.storage.local.set({'calendars': calendars}, function() {
+  chrome.storage.local.set({'calendars': data}, function() {
     if (chrome.runtime.lastError) return;
 
     if(callback) callback();

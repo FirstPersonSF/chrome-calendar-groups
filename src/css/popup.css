@@ -1,3 +1,6 @@
+/* ====================
+* Base
+* ===================== */
 html, body{position:relative; width:300px; height:400px; min-height:400px; max-height:400px;}
 h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
 p{font-size:16px; font-weight:300; line-height:1.5em;}
@@ -11,25 +14,36 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
   color:#aaa !important;
 }
 
+.btn{width:100%;}
+.btn-wrap{margin:40px 0 0 0;}
+.header-padding{position:relative; margin-top:54px; padding-top:25px;}
+
+/* ====================
+* Header
+* ===================== */
 #logo_text{font-size:18px; font-weight:400;}
 #action-bar img{width:18px; height:18px;}
-.btn-wrap{margin:40px 0 0 0;}
-
-#error-auth, #content-body{padding-top:25px;}
-
-.link-trouble{margin:20px 0 0 0; font-size:12px;}
-
-.btn{width:100%;}
-
-.header-padding{position:relative; margin-top:54px; padding-top:25px;}
 .btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
 
+/* ====================
+* Authentication
+* ===================== */
+#error-auth, #content-body{padding-top:25px;}
+.link-trouble{margin:20px 0 0 0; font-size:12px;}
+
+
+/* ====================
+* Create Sets
+* ===================== */
 #create-sets{font-size:14px;}
 #create-sets{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:25px 15px 15px 15px;}
 #create-sets .btn-close{cursor:pointer; line-height:1em;}
 #create-sets .select-calendar{display:block; width:100%;}
 #create-sets .group-name{font-size:14px; padding:5px;}
 
+/* ====================
+* Sets List
+* ===================== */
 #sets-list .btn-change-calendar{cursor:pointer;}
 #sets-list .btn-order-list{display:none; font-size:14px; cursor:pointer; color:#aaa;}
 #sets-list .list .fa-align-justify{display:none;}
@@ -47,7 +61,6 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 #sets-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
 
-
 #sets-list .item{position:relative;}
 #sets-list .item:hover{background:#eee;}
 #sets-list .item .box{margin:0; padding:7px 10px;}
@@ -55,6 +68,9 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 #sets-list .btn-delete, #sets-list .btn-edit{cursor:pointer;}
 
+/* ====================
+* Footer
+* ===================== */
 .main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:20;}
 .main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px; cursor:pointer;}
 .main-footer .alert .btn-close{margin:3px 0 0 0;}

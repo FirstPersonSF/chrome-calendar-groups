@@ -33,7 +33,7 @@ var background = {};
  */
 background.initialize = function() {
   background.listenForRequests();
-  feeds.fetchCalendars();
+  calendars.fetchCalendars();
 };
 
 /**
@@ -46,17 +46,16 @@ background.listenForRequests = function() {
     switch(request.method) {
 
       case 'authtoken.update':
-        feeds.requestInteractiveAuthToken();
+        calendars.requestInteractiveAuthToken();
         break;
 
       case 'events.Calendar.fetch':
-        feeds.fetchCalendars();
+        calendars.fetchCalendars();
         break;
 
       case 'events.sets.uptdate':
-        feeds.updateSets();
+        calendars.updateSets();
         break;
-
     }
 
     // Indicates to Chrome that a pending async request will eventually issue

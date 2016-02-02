@@ -9,7 +9,6 @@ var popupAction = {};
  */
 popupAction.settimeout = {}
 
-
 /**
  * Store Html main Element.
  * @enum {string}
@@ -20,8 +19,15 @@ popupAction.elem = {
   auth: 'error-auth',
   mainContent : 'main-content',
   setLists : 'sets-list',
-  addonCreateSet :'create-sets'
+  addonCreateSet :'create-sets',
+  actionBar : 'action-bar'
 }
+
+
+/**
+ * Dadjs "Need" to be global for the deactivate to work.
+ */
+popupAction.globalDad = $('#' + popupAction.elem.setLists + ' .list').dad()
 
 
 /**
@@ -35,6 +41,7 @@ popupAction.initialize = function() {
 
   // Update
   chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
+  chrome.extension.sendMessage({method: 'ui.refresh'});
 };
 
 
@@ -63,40 +70,55 @@ popupAction.fillMessages = function() {
  * @private
  */
 popupAction.installButtonClickHandlers = function() {
-  var actionBar = $('#action-bar');
-  var selection = $('#create-sets');
-  var groupsList = $('#sets-list');
+  var actionBar = $('#' + popupAction.elem.actionBar);
+  var createSet = $('#' + popupAction.elem.addonCreateSet);
+  var setLists = $('#' + popupAction.elem.setLists);
+  popupAction.globalDad.deactivate();
 
+  // Auth Button Click
   $('#authorization_required').on('click', function() {
     $('#authorization_required').text(chrome.i18n.getMessage('authorization_in_progress'));
     chrome.extension.sendMessage({method: 'authtoken.update'});
   });
 
-  // Add New Groups
+  // Add new set
   actionBar.find('.btn-add-group').click(function(){
-    selection.find('.main-title').text('Add Groups').attr({'data-id':''});
-    selection.find('.btn').text('Create');
+    createSet.find('.main-title').text('Add Groups').attr({'data-id':''});
+    createSet.find('.btn').text('Create');
+    popupAction.resetDisplay();
     popupAction.addonAddSet();
   });
 
-  var dad = $('#sets-list .list').dad().deactivate();
-  groupsList.find('.btn-order-list').click(function(){
+  // Init Select2
+  setLists.find('.btn-order-list').click(function(){
     if($(this).text().toLowerCase() == 'edit'){
       $(this).text('Done').css({color:'#0275d8'});
-      dad.activate();
+      popupAction.globalDad.activate();
     }else{
       $(this).text('Edit').css({color:''});
-      dad.deactivate();
+      popupAction.globalDad.deactivate();
       popupAction.putSetsOrder();
     }
   });
 
 
+  // Option page
   $('#show_options').on('click', function() {
     chrome.tabs.create({'url': 'options.html'});
   });
 };
 
+
+/**
+ * Reset the display if dropdown menu is open
+ * @private
+ */
+popupAction.resetDisplay = function(){
+  var setLists = $('#' + popupAction.elem.setLists);
+  setLists.find('.btn-order-list').text('Edit').css({color:''});
+  popupAction.globalDad.deactivate();
+  popupAction.putSetsOrder();
+}
 
 /**
  * Checks if we're logged in and either shows or hides a message asking
@@ -253,13 +275,14 @@ popupAction.loadInputSelection = function() {
 
       var newSet = {
         'id': (setId)? setId : uuid,
-        "title": createSet.find('.group-name').val(),
+        "title": createSet.find('.group-name').val() || '',
         "selection": newCalendarsList,
         "selected": false
       };
 
+
       // Validation
-      if(selection && title ){
+      if(newSet.selection.length > 0 && newSet.title){
         popupAction.createSet(newSet);
         popupAction.closeAddon();
       }else{
@@ -351,12 +374,10 @@ popupAction.addonAddSet = function(editObj){
       addonCreateSet.find('.main-title').text('Edit Groups').attr({'data-id': editObj.id});
       addonCreateSet.find('.btn').text('Edit');
       addonCreateSet.find('.group-name').val(editObj.title);
-      addonCreateSet.find('.select-calendar').val(selectionArray).trigger("change");
+      addonCreateSet.find('.select-calendar').val(selectCalendarArray).trigger("change");
     }
 
-    addonCreateSet.find('.select-calendar').select2({
-      placeholder: "Select Group"
-    });
+    addonCreateSet.find('.select-calendar').select2({placeholder: "Select Group"});
   }).animate({top:0});
 
   //Init close button

@@ -32,9 +32,9 @@
       "lib/underscore/underscore.js",
       "lib/async/async.min.js",
       "scripts/constants.js",
-      "scripts/auth.js",
       "scripts/storage.js",
-      "scripts/feeds.js",
+      "scripts/api.js",
+      "scripts/calendars.js",
       "scripts/background.js"
     ]
   },
