@@ -92,6 +92,7 @@ calendars.updateSets = function(){
       var compareCalendars = {};
       var setsObj = _.filter(setsStorage, function(obj){return obj.selected === true;});
 
+      // new data and compare data
       _.each(calendarsStorage, function(calendar){
         console.log(setsObj[0]);
         var calenderSelected = _.find(setsObj[0].selection, function(item){
@@ -124,7 +125,7 @@ calendars.updateSets = function(){
         console.log("> " + compareCalendar.summary + ": " + compareCalendar.selected);
       });
 
-
+      // Change data
       storage.local.putCalendars(newStoredCalendars, function(){
         console.log("Starting API requests -------------------------");
         async.each(compareCalendars, function(calendar, callback) {
@@ -185,8 +186,8 @@ calendars.putCalendars = function(calendarObj, callback){
 
   api.calendars.putList(calendarObj.id, apiObj, function(successResponse){
     console.log('Successful Response:', successResponse);
-    callback(null);
 
+    callback(null);
   }, function(errorResponse){
     console.log("Failed Response:", errorResponse);
 
