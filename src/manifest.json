@@ -3,9 +3,10 @@
   "name": "Google Calendar Groups",
   "author": "First Person",
   "homepage_url": "https://github.com/FirstPersonSF/chrome-calendar-groups",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Display and hide multiple calendars at once",
   "default_locale": "en",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvZk5A2Zcih37cr0TMOt1O9vN9F4DoHNGehixwre+ORaD9VHsv3ewpjUumXJ11bvo/1vXinlOWBgxytYRtmV7HzaN+fLZrywvmatA6uS00J4tyDR7pubRqKFSlT0/qEN8FyFuZ4f6MC9WByv3NDZ6zjzRbUYo8xxh+9ZgCY7E9OLBbksc4ZZEEgx0BZ+volUVBO863eBDHBrgoZXzyMzNIrHBepZincjEoxHlVLB2dSKWQfMijwjxZeimCQWHHNAW74UDjgl90MK3DQ96sVRjfbF8M2ZU0ktL+gwtrcVcQkH/LrEcLqwyhPEIRrio7glWrfyUCtXw+f65Mt0W0HN2ZQIDAQAB",
 
   "icons": {
     "16": "icons/logo_calendar_32.png",
@@ -23,7 +24,7 @@
   ],
 
   "oauth2": {
-    "client_id": "",
+    "client_id": "1060515631260-tuhd3e0jd3atthddnumsivk0bklt06fu.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/calendar"
     ]
