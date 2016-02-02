@@ -6,7 +6,12 @@
   "version": "1.0.0",
   "description": "Display and hide multiple calendars at once",
   "default_locale": "en",
-  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCzO8gAn6n4s5Ohs50F2lmLGsO0FVKIwYyro8qZHlU+9pF85wGBEqoNwSeawr+AZdLgtnQRkIgatLM68EX8sB0DErp3Ds4qCvY8VufvvDIoqxdKtC3QlFxR9PoUZMY7/4lb/OadWnr0UjekxcSNVyk6nqZkTFCcE7RWDMDZ8qwqsQIDAQAB",
+
+  "icons": {
+    "16": "icons/logo_calendar_32.png",
+    "48": "icons/logo_calendar_96.png",
+    "128": "icons/logo_calendar_256.png"
+  },
 
   "permissions": [
     "tabs",
@@ -18,7 +23,7 @@
   ],
 
   "oauth2": {
-    "client_id": "840256951321-stskg5tsvdfjcf1c5cthd6n5k54nq7q0.apps.googleusercontent.com",
+    "client_id": "",
     "scopes": [
       "https://www.googleapis.com/auth/calendar"
     ]
