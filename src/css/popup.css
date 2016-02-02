@@ -1,6 +1,7 @@
 /* ====================
 * Base
 * ===================== */
+/* fix height and width - max height 800px */
 html, body{position:relative; width:300px; height:400px; min-height:400px; max-height:400px;}
 h2{font-size:18px; font-weight:400; margin:0 0 15px 0;}
 p{font-size:16px; font-weight:300; line-height:1.5em;}
