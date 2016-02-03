@@ -29,7 +29,8 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 /* ====================
 * Authentication
 * ===================== */
-#error-auth, #content-body{display:none; padding-top:25px;}
+#error-auth, #main-content{display:none; padding-top:25px;}
+#main-content{margin-bottom:50px;}
 .link-trouble{margin:20px 0 0 0; font-size:12px;}
 
 
@@ -37,7 +38,7 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 * Create Sets
 * ===================== */
 #create-sets{font-size:14px;}
-#create-sets{display:none; position:absolute; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding:25px 15px 15px 15px;}
+#create-sets{display:none; position:fixed; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding-left:15px; padding-right:15px; padding-bottom:15px;}
 #create-sets .btn-close{cursor:pointer; line-height:1em;}
 #create-sets .select-calendar{display:block; width:100%;}
 #create-sets .group-name{font-size:14px; padding:5px;}
@@ -72,6 +73,11 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 /* ====================
 * Footer
 * ===================== */
-.main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:20;}
-.main-footer .alert{display:none; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px; cursor:pointer;}
+.main-footer{position:fixed; bottom:0; left:0; width:100%; z-index:0; background:#eee;}
+.main-footer .alert{display:none; position:absolute; bottom:0; left:0; width:100%; margin:0; padding:8px 15px; border-radius:0; font-size:12px; cursor:pointer;}
 .main-footer .alert .btn-close{margin:3px 0 0 0;}
+
+.main-footer .powerlogo-wrap{ bottom:0; padding:5px; right:0;}
+.main-footer .powerlogo-wrap .text{display:block; font-size:10px; color:#aaa; text-align:center;}
+.main-footer .powerlogo-wrap img{width:20%;}
+.main-footer .powerlogo-wrap a, .main-footer .powerlogo-wrap a:visited, .main-footer .powerlogo-wrap a:hover{color:#ccc; text-decoration:none;}
