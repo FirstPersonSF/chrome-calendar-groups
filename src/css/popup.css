@@ -46,7 +46,7 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 /* ====================
 * Sets List
 * ===================== */
-#sets-list .btn-change-calendar{cursor:pointer; line-height: 1.4em;}
+#sets-list .btn-change-calendar{cursor:pointer;}
 #sets-list .btn-order-list{display:none; font-size:14px; cursor:pointer; color:#aaa;}
 #sets-list .list .fa-align-justify{display:none;}
 #sets-list .list.dad-active .fa-align-justify{display:block; margin:5px 0 0 0;}
@@ -63,10 +63,12 @@ p{font-size:16px; font-weight:300; line-height:1.5em;}
 
 #sets-list .tab-info{display:none; position:absolute; z-index:1; top:75%; left:0; width:100%; background:#fff; border:1px solid #ccc; padding:7px 10px; font-size:12px;}
 
-#sets-list .item{position:relative;}
+#sets-list .item{position:relative; line-height:1.4em; padding-top:2px; padding-bottom:2px;}
 #sets-list .item:hover{background:#eee;}
 #sets-list .item .box{margin:0; padding:7px 10px;}
 .fa{margin:0 0 0 10px; cursor:pointer;}
+.fa-info-circle:hover, .fa-caret-square-o-down:hover{color:#0275d8;}
+.fa-caret-square-o-down:hover .more-menu li{color:#373a3c;}
 
 #sets-list .btn-delete, #sets-list .btn-edit{cursor:pointer;}
 
