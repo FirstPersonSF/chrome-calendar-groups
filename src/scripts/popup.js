@@ -217,6 +217,12 @@ popupAction.displaySetLists = function(){
       $(this).closest('.item').find('.tab-info').hide();
     });
 
+    // Hover top so that you can interactive with dropdown menu
+    setLists.find('.btn-icon-info, .fa-caret-square-o-down').hover(function(){
+      var topPos = $(this).position().top + $(this).height();
+      $(this).closest('.list').find('.tab-info , .more-menu').css({'top': topPos + 'px' });
+    });
+
     // Delete Set
     setLists.find('.list .btn-delete').click(function(){
       popupAction.deleteSet($(this).closest('.item').attr('data-id'));
