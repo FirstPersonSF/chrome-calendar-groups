@@ -379,7 +379,7 @@ popupAction.addonAddSet = function(editObj){
       var selectCalendarArray = _.map(editObj.selection, function(item){return item.id});
 
       addonCreateSet.find('.main-title').text('Edit Groups').attr({'data-id': editObj.id});
-      addonCreateSet.find('.btn').text('Edit');
+      addonCreateSet.find('.btn').text('Done');
       addonCreateSet.find('.group-name').val(editObj.title);
       addonCreateSet.find('.select-calendar').val(selectCalendarArray).trigger("change");
     }

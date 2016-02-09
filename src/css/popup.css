@@ -24,7 +24,7 @@ a, a:focus, a:blur{outline: 0; text-decoration:none;}
 * Header
 * ===================== */
 #logo_text{font-size:18px; font-weight:400;}
-.logo_img{display:inline-block !important; width:22px; height:22px; margin:-3px 0 0 0;}
+.logo_img{display:inline-block !important; width:22px; height:22px; margin:-3px 5px 0 0;}
 #action-bar img{width:18px; height:18px;}
 .btn-add-group{display:block; color:#fff; font-size:22px; line-height:1em;}
 
