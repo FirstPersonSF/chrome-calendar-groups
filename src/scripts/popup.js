@@ -42,6 +42,7 @@ popupAction.initialize = function() {
 
   // Update
   chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
+  chrome.extension.sendMessage({method: 'local.setting.check'});
   chrome.extension.sendMessage({method: 'ui.refresh'});
 };
 
@@ -174,7 +175,7 @@ popupAction.listenForRequests = function() {
  * event handler.
  */
 popupAction.displaySetLists = function(){
-  storage.local.getSets(function(setsStorage){
+  storage.local.getStorage(constants.storage.set, function(setsStorage){
     var setLists = $('#' + popupAction.elem.setLists);
 
     // Reset Display
@@ -190,6 +191,7 @@ popupAction.displaySetLists = function(){
 
     // Build Html
     _.each(sortBy, function(set){
+      console.log('this is set', set.selection);
       var infoArray = _.map(set.selection, function(item){return item.summary});
       var layout = '<div class="item container-fluid" data-id="'+set.id+'"><div class="row">';
       layout += '<div class="btn-change-calendar box col-xs-7">' + set.title + '</div>';
@@ -240,7 +242,7 @@ popupAction.displaySetLists = function(){
         chrome.extension.sendMessage({method: 'selection.sets.disabled'});
         _.each(setsStorage, function(obj){(obj.id == setId)? obj.selected = true : obj.selected = false;});
 
-        storage.local.putSets(setsStorage, chrome.extension.sendMessage({method: 'events.sets.uptdate'}));
+        storage.local.putStorage(constants.storage.set, setsStorage, chrome.extension.sendMessage({method: 'events.sets.uptdate'}));
       }
     });
 
@@ -255,7 +257,7 @@ popupAction.displaySetLists = function(){
  * @private
  */
 popupAction.loadInputSelection = function() {
-  storage.local.getCalendars(function(calendarsStorage){
+  storage.local.getStorage(constants.storage.calendars, function(calendarsStorage){
 
     var createSet = $('#'+ popupAction.elem.addonCreateSet);
     createSet.find('.select-calendar').empty();
@@ -311,12 +313,12 @@ popupAction.loadInputSelection = function() {
  * @private
  */
 popupAction.createSet = function(set){
-  storage.local.getSets(function(setsStorage){
+  storage.local.getStorage(constants.storage.set, function(setsStorage){
     var order = (_.isEmpty(setsStorage))? 0 : (_.max(setsStorage, function(obj){return obj.order;})).order;
     (setsStorage[set.id])? set.order = setsStorage[set.id].order : set.order = order + 1;
     setsStorage[set.id] = set;
 
-    storage.local.putSets(setsStorage, popupAction.displaySetLists);
+    storage.local.putStorage(constants.storage.set, setsStorage, popupAction.displaySetLists);
   });
 };
 
@@ -327,9 +329,12 @@ popupAction.createSet = function(set){
  * @private
  */
 popupAction.deleteSet = function(setId){
-  storage.local.getSets(function(setsStorage){
+  console.log(setId);
+  storage.local.getStorage(constants.storage.set, function(setsStorage){
+    console.log(setsStorage);
     delete setsStorage[setId];
-    storage.local.putSets(setsStorage, popupAction.displaySetLists);
+    console.log(setsStorage);
+    storage.local.putStorage(constants.storage.set, setsStorage, popupAction.displaySetLists);
   });
 };
 
@@ -342,13 +347,13 @@ popupAction.putSetsOrder = function(callback){
   var setLists = $('#' + popupAction.elem.setLists + ' .list' );
   if(!setLists.hasClass('dad-active')) return;
 
-  storage.local.getSets(function(setsStorage){
+  storage.local.getStorage(constants.storage.set, function(setsStorage){
     setLists.find('.item').each(function(){
       if($(this).attr('data-dad-position')) setsStorage[$(this).attr('data-id')].order = $(this).attr('data-dad-position');
     });
 
     if(callback) callback();
-    storage.local.putSets(setsStorage, popupAction.displaySetLists);
+    storage.local.putStorage(constants.storage.set, setsStorage, popupAction.displaySetLists);
   });
 };
 

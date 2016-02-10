@@ -56,6 +56,10 @@ background.listenForRequests = function() {
       case 'events.sets.uptdate':
         calendars.updateSets();
         break;
+
+      case 'local.setting.check':
+        calendars.firstTimeUser();
+        break;
     }
 
     // Indicates to Chrome that a pending async request will eventually issue

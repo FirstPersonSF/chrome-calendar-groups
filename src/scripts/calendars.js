@@ -28,7 +28,7 @@ calendars.requestInteractiveAuthToken = function() {
  * @Public
  */
 calendars.fetchCalendars = function(type) {
-  storage.local.getCalendars(function(calendarsStorage){
+  storage.local.getStorage(constants.storage.calendars, function(calendarsStorage){
 
     api.calendars.getList(function(successResponse){
       // New List
@@ -63,7 +63,7 @@ calendars.fetchCalendars = function(type) {
         calendars[calendar.id] = mergedCalendar;
       });
 
-      storage.local.putCalendars(calendars, calendars.refreshUI);
+      storage.local.putStorage(constants.storage.calendars, calendars, calendars.refreshUI);
 
     });
   });
@@ -86,8 +86,8 @@ calendars.fetchCalendars = function(type) {
  */
 calendars.updateSets = function(){
 
-  storage.local.getCalendars(function(calendarsStorage){
-    storage.local.getSets(function(setsStorage){
+  storage.local.getStorage(constants.storage.calendars, function(calendarsStorage){
+    storage.local.getStorage(constants.storage.set, function(setsStorage){
       var newStoredCalendars = {};
       var compareCalendars = {};
       var setsObj = _.filter(setsStorage, function(obj){return obj.selected === true;});
@@ -126,7 +126,7 @@ calendars.updateSets = function(){
       });
 
       // Change data
-      storage.local.putCalendars(newStoredCalendars, function(){
+      storage.local.putStorage(constants.storage.calendars, newStoredCalendars, function(){
         console.log("Starting API requests -------------------------");
         async.each(compareCalendars, function(calendar, callback) {
           _.defer(function(){
@@ -202,8 +202,55 @@ calendars.putCalendars = function(calendarObj, callback){
  * obtained during the last fetch. Does not fetch new data.
  */
 calendars.refreshUI = function() {
-  console.log('test');
 
   // Notify the browser action in case it's open.
   chrome.extension.sendMessage({method: 'ui.refresh'});
+};
+
+/**
+ * Check user if its there first time and init setting.
+ */
+calendars.firstTimeUser = function(){
+  storage.local.getStorage(constants.storage.setting, function(settingsStorage){
+    if(!_.isEmpty(settingsStorage)) return;
+
+    settingsStorage['init'] = {firstTime: false};
+    storage.local.putStorage(constants.storage.setting, settingsStorage, function(){
+      calendars.createDefaultGroup();
+    });
+
+  });
+};
+
+/**
+ * Create first group for first time user
+ * @typedef {{
+ *   id: (string|unique id),
+ *   title: (string),
+ *   selection: {Array.<string>},
+ *   selected: (boolean|false)
+ * }}
+ * @private
+ */
+calendars.createDefaultGroup = function(){
+  api.calendars.getCalendars('primary', function(response){
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+
+    var set = {
+      id: uuid,
+      title: 'My Calendar',
+      selection: [{id: response.id, summary: response.summary}],
+      selected: false,
+      order:1
+    };
+
+    storage.local.getStorage(constants.storage.set, function(setsStorage){
+      setsStorage[set.id] = set;
+      storage.local.putStorage(constants.storage.set, setsStorage, chrome.extension.sendMessage({method: 'ui.refresh'}));
+    });
+
+  });
 };
