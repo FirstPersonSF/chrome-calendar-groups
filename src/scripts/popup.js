@@ -92,11 +92,11 @@ popupAction.installButtonClickHandlers = function() {
 
   // Init Select2
   setLists.find('.btn-order-list').click(function(){
-    if($(this).text().toLowerCase() == 'edit'){
+    if($(this).text().toLowerCase() == 'reorder'){
       $(this).text('Done').css({color:'#0275d8'});
       popupAction.globalDad.activate();
     }else{
-      $(this).text('Edit').css({color:''});
+      $(this).text('Reorder').css({color:''});
       popupAction.putSetsOrder(popupAction.globalDad.deactivate);
     }
   });
@@ -115,7 +115,7 @@ popupAction.installButtonClickHandlers = function() {
  */
 popupAction.resetDisplay = function(){
   var setLists = $('#' + popupAction.elem.setLists);
-  setLists.find('.btn-order-list').text('Edit').css({color:''});
+  setLists.find('.btn-order-list').text('Reorder').css({color:''});
   popupAction.putSetsOrder(popupAction.globalDad.deactivate);
 }
 

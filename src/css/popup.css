@@ -55,7 +55,7 @@ a, a:focus, a:blur{outline: 0; text-decoration:none;}
 
 #sets-list .list, #sets-list .msg, #sets-list .list .icon-list, #sets-list .list.dad-active .icon-list{display:none;}
 #sets-list .list .item:hover .icon-list{display:block;}
-#sets-list .list.dad-active .item:hover .icon-list{display:block;}
+#sets-list .list.dad-active .item:hover .icon-list{display:none;}
 
 #sets-list .btn-icon-more .more-menu{display:none;}
 #sets-list .btn-icon-more:hover .more-menu{display:block;}
