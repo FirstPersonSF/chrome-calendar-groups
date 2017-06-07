@@ -39,11 +39,12 @@ a, a:focus, a:blur{outline: 0; text-decoration:none;}
 /* ====================
 * Create Sets
 * ===================== */
-#create-sets{font-size:14px; max-height: 365px; overflow-y: scroll;}
+#create-sets{font-size:14px;}
 #create-sets{display:none; position:fixed; z-index:2; width:100%; top:-600px; left:0; background:#f0f0f0; padding-left:15px; padding-right:15px; padding-bottom:15px;}
 #create-sets .btn-close{cursor:pointer; line-height:1em;}
 #create-sets .select-calendar{display:block; width:100%;}
 #create-sets .group-name{font-size:14px; padding:5px;}
+#create-sets .select2-selection{max-height: 153px; overflow-y: scroll;}
 
 /* ====================
 * Sets List
