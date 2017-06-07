@@ -42,7 +42,7 @@ background.initialize = function() {
  * @private
  */
 background.listenForRequests = function() {
-  chrome.extension.onMessage.addListener(function(request, sender, opt_callback) {
+  chrome.runtime.onMessage.addListener(function(request, sender, opt_callback) {
     switch(request.method) {
 
       case 'authtoken.update':

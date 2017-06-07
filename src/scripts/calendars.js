@@ -32,7 +32,7 @@ calendars.fetchCalendars = function(type) {
 
     api.calendars.getList(function(successResponse){
       // New List
-      var calendars = {};
+      var calendarsList = {};
 
       _.each(successResponse.items, function(calendar){
         var storedCalendar = calendarsStorage[calendar.id] || {};
@@ -54,16 +54,15 @@ calendars.fetchCalendars = function(type) {
           selected: calendarSelected
         };
 
-
         // Option.html
         if(storedCalendar.selected !== calendarSelected && type == 'update'){
           calendars.putCalendars(mergedCalendar);
         }
 
-        calendars[calendar.id] = mergedCalendar;
+        calendarsList[calendar.id] = mergedCalendar;
       });
 
-      storage.local.putStorage(constants.storage.calendars, calendars, calendars.refreshUI);
+      storage.local.putStorage(constants.storage.calendars, calendarsList, calendars.refreshUI);
 
     });
   });
@@ -147,8 +146,8 @@ calendars.updateSets = function(){
             chrome.tabs.query({active:true, windowType:"normal", currentWindow: true},function(d){
               var tabId = d[0].id;
               chrome.tabs.reload(tabId);
-              chrome.extension.sendMessage({method: 'selection.sets.enable'});
-              chrome.extension.sendMessage({method: 'ui.close'});
+              chrome.runtime.sendMessage({method: 'selection.sets.enable'});
+              chrome.runtime.sendMessage({method: 'ui.close'});
             });
 
             console.log('All requests were successful');
@@ -202,9 +201,8 @@ calendars.putCalendars = function(calendarObj, callback){
  * obtained during the last fetch. Does not fetch new data.
  */
 calendars.refreshUI = function() {
-
   // Notify the browser action in case it's open.
-  chrome.extension.sendMessage({method: 'ui.refresh'});
+  chrome.runtime.sendMessage({method: 'ui.refresh'});
 };
 
 /**
@@ -249,7 +247,7 @@ calendars.createDefaultGroup = function(){
 
     storage.local.getStorage(constants.storage.set, function(setsStorage){
       setsStorage[set.id] = set;
-      storage.local.putStorage(constants.storage.set, setsStorage, chrome.extension.sendMessage({method: 'ui.refresh'}));
+      storage.local.putStorage(constants.storage.set, setsStorage, chrome.runtime.sendMessage({method: 'ui.refresh'}));
     });
 
   });

@@ -41,9 +41,9 @@ popupAction.initialize = function() {
   popupAction.listenForRequests();
 
   // Update
-  chrome.extension.sendMessage({method: 'events.Calendar.fetch'});
-  chrome.extension.sendMessage({method: 'local.setting.check'});
-  chrome.extension.sendMessage({method: 'ui.refresh'});
+  chrome.runtime.sendMessage({method: 'events.Calendar.fetch'});
+  chrome.runtime.sendMessage({method: 'local.setting.check'});
+  chrome.runtime.sendMessage({method: 'ui.refresh'});
 };
 
 
@@ -80,7 +80,7 @@ popupAction.installButtonClickHandlers = function() {
   // Auth Button Click
   $('#authorization_required').on('click', function() {
     $('#authorization_required').text(chrome.i18n.getMessage('authorization_in_progress'));
-    chrome.extension.sendMessage({method: 'authtoken.update'});
+    chrome.runtime.sendMessage({method: 'authtoken.update'});
   });
 
   // Add new set
@@ -144,7 +144,7 @@ popupAction.showLoginMessageIfNotAuthenticated = function() {
  * @private
  */
 popupAction.listenForRequests = function() {
-  chrome.extension.onMessage.addListener(function(request, sender, opt_callback) {
+  chrome.runtime.onMessage.addListener(function(request, sender, opt_callback) {
     switch(request.method) {
       case 'ui.refresh':
         popupAction.showLoginMessageIfNotAuthenticated();
@@ -239,10 +239,10 @@ popupAction.displaySetLists = function(){
     setLists.find('.btn-change-calendar').click(function(){
       var setId = $(this).closest('.item').attr('data-id');
       if(!$(this).hasClass('dad-active')){
-        chrome.extension.sendMessage({method: 'selection.sets.disabled'});
+        chrome.runtime.sendMessage({method: 'selection.sets.disabled'});
         _.each(setsStorage, function(obj){(obj.id == setId)? obj.selected = true : obj.selected = false;});
 
-        storage.local.putStorage(constants.storage.set, setsStorage, chrome.extension.sendMessage({method: 'events.sets.uptdate'}));
+        storage.local.putStorage(constants.storage.set, setsStorage, chrome.runtime.sendMessage({method: 'events.sets.uptdate'}));
       }
     });
 
